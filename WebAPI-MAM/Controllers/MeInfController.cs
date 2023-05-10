@@ -15,23 +15,23 @@ namespace WebAPI_MAM.Controllers
             this.dbContext = context;
         }
 
-        [HttpGet] //Lista de los doctores
+        [HttpGet] //Lista de datos medicos
         public async Task<ActionResult<List<MedicInfo>>> Get()
         {
-            return await dbContext.MedicInfo.ToListAsync();
+            return await dbContext.MedicInfo.Include(p => p.patient).ToListAsync();
 
         }
-
-        [HttpPost]
+        //No se puede agregar datos medicos desde aqui, tiene que ser desde la creacion de un paciente
+        /*[HttpPost]
         public async Task<ActionResult<MedicInfo>> Post(MedicInfo medicInfo)
         {
             dbContext.Add(medicInfo);
             await dbContext.SaveChangesAsync();
             return Ok();
-        }
+        }*/
 
         [HttpPut]
-        public async Task<ActionResult> Put(MedicInfo medicInfo, int id)
+        public async Task<ActionResult> Put([FromBody] MedicInfo medicInfo, [FromHeader] int id)
         {
             if (medicInfo.Id != id)
             {
@@ -43,7 +43,7 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete([FromHeader] int id)
         {
             var exist = await dbContext.MedicInfo.AnyAsync(x => x.Id == id);
 

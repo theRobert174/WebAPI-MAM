@@ -1,27 +1,33 @@
-﻿using System.Diagnostics.Tracing;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using WebAPI_MAM.Validators;
 
 namespace WebAPI_MAM.Entities
 {
     public class Appointments
     {
+        [Key]
         public int Id { get; set; }
 
+        [Required]
         public DateTime Date { get; set; }
 
+        [Required]
+        [ApStatus]
         public string Status { get; set; }
 
-        public int DoctorId { get; set; }
+        [Required]
+        [ForeignKey("doctor")]
+        public int doctorId { get; set; }
+        public Doctors doctor { get; set; }
 
-        public Doctors Doctors { get; set; }
-
+        [Required]
+        [ForeignKey("patient")]
         public int patientId { get; set; }
-        //Se utiliza ICollection para evitar que salte una excepción de relación en la base de datos
-        public ICollection<Patients> patients { get; set; }
+        public Patients patient { get; set; }
 
-        public int diagId { get; set; }
-
-        public ICollection<Diagnosis> diagnosis { get; set; }
-
-
+        [ForeignKey("diagnostic")]
+        public int diagnosticId { get; set; }
+        public Diagnosis diagnostic { get; set; }
     }
 }

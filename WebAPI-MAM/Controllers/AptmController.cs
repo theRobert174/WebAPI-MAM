@@ -8,11 +8,11 @@ namespace WebAPI_MAM.Controllers
     [ApiController]
     [Route("MAM/Appointments")]
 
-    public class AptmCtrl : ControllerBase
+    public class AptmController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
 
-        public AptmCtrl(ApplicationDbContext context)
+        public AptmController(ApplicationDbContext context)
         {
             this.dbContext = context;
         }
@@ -25,7 +25,7 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Appointments appointments)
+        public async Task<ActionResult> Post([FromBody] Appointments appointments)
         {
             dbContext.Add(appointments);
             await dbContext.SaveChangesAsync();
@@ -33,11 +33,11 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Put(Appointments appointments, int id)
+        public async Task<ActionResult> Put([FromBody] Appointments appointments, [FromHeader] int id)
         {
             if (appointments.Id != id)
             {
-                return BadRequest("El id de la cita no coincide en la URL");
+                return BadRequest("El id de la cita no coincide con el proporcionado en los Headers");
             }
             dbContext.Update(appointments);
             await dbContext.SaveChangesAsync();
@@ -45,7 +45,7 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete([FromHeader] int id)
         {
             var exist = await dbContext.Appointments.AnyAsync(x => x.Id == id);
 

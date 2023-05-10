@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace WebAPI_MAM
 {
@@ -17,7 +17,10 @@ namespace WebAPI_MAM
 
             // Add services to the container.
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x =>
+            {
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddDbContext<ApplicationDbContext>(options => //Connection DataBase
                 options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")

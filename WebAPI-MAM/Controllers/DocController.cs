@@ -8,11 +8,11 @@ namespace WebAPI_MAM.Controllers
     [ApiController]
     [Route("MAM/Doctores")]
    
-        public class DocCtrl:ControllerBase
+        public class DocController : ControllerBase
         {
             private readonly ApplicationDbContext dbContext;
 
-            public DocCtrl(ApplicationDbContext context)
+            public DocController(ApplicationDbContext context)
             {
                 this.dbContext = context;
             }
@@ -25,7 +25,7 @@ namespace WebAPI_MAM.Controllers
             }
 
             [HttpPost]
-            public async Task<ActionResult<Doctors>> Post(Doctors doctors)
+            public async Task<ActionResult<Doctors>> Post([FromBody] Doctors doctors)
             {
                  dbContext.Add(doctors);
                  await dbContext.SaveChangesAsync();
@@ -33,11 +33,11 @@ namespace WebAPI_MAM.Controllers
             }
 
             [HttpPut]
-            public async Task<ActionResult> Put(Doctors doctors, int id)
+            public async Task<ActionResult> Put([FromBody] Doctors doctors, [FromHeader] int id)
             {
                 if(doctors.Id != id)
                 {
-                    return BadRequest("El id del doctor no coincide en la URL");
+                    return BadRequest("El id del doctor no coincide con el especificado en Headers");
                 }
                 dbContext.Update(doctors);
                 await dbContext.SaveChangesAsync();
@@ -45,7 +45,7 @@ namespace WebAPI_MAM.Controllers
             }
 
             [HttpDelete]
-            public async Task<ActionResult> Delete(int id)
+            public async Task<ActionResult> Delete([FromHeader] int id)
             {
                 var exist = await dbContext.Doctors.AnyAsync(x => x.Id == id);
 

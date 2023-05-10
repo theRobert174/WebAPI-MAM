@@ -21,21 +21,21 @@ namespace WebAPI_MAM.Controllers
             return await dbContext.Diagnosis.ToListAsync();
 
         }
-
-        [HttpPost]
-        public async Task<ActionResult<Diagnosis>> Post(Diagnosis diagnosis)
+        //No se puede agregar diagnosticos desde aqui, se tiene que modificando la cita
+        /*[HttpPost]
+        public async Task<ActionResult<Diagnosis>> Post([FromBody] Diagnosis diagnosis)
         {
             dbContext.Add(diagnosis);
             await dbContext.SaveChangesAsync();
             return Ok();
-        }
+        }*/
 
         [HttpPut]
-        public async Task<ActionResult> Put(Diagnosis diagnosis, int id)
+        public async Task<ActionResult> Put([FromBody] Diagnosis diagnosis, [FromHeader] int id)
         {
             if (diagnosis.Id != id)
             {
-                return BadRequest("El id del diagnostico no coincide en la URL");
+                return BadRequest("El id del diagnostico no coincide con el proporcionado el los Headers");
             }
             dbContext.Update(diagnosis);
             await dbContext.SaveChangesAsync();
@@ -43,7 +43,7 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> Delete([FromHeader] int id)
         {
             var exist = await dbContext.Diagnosis.AnyAsync(x => x.Id == id);
 

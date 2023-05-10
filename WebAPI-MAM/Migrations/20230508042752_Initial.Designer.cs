@@ -12,8 +12,8 @@ using WebAPI_MAM;
 namespace WebAPI_MAM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230507050624_Inicial")]
-    partial class Inicial
+    [Migration("20230508042752_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,33 +27,36 @@ namespace WebAPI_MAM.Migrations
 
             modelBuilder.Entity("WebAPI_MAM.Entities.Appointments", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DoctorsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("date")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("diagId")
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("diagnosticId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("doctorId")
                         .HasColumnType("int");
 
                     b.Property<int>("patientId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.HasIndex("DoctorsId");
+                    b.HasIndex("diagnosticId")
+                        .IsUnique();
+
+                    b.HasIndex("doctorId");
+
+                    b.HasIndex("patientId");
 
                     b.ToTable("Appointments");
                 });
@@ -66,24 +69,23 @@ namespace WebAPI_MAM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Appointmentsid")
-                        .HasColumnType("int");
-
                     b.Property<string>("diagnostic")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("drugs")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("observations")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("treatment")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Appointmentsid");
 
                     b.ToTable("Diagnosis");
                 });
@@ -97,12 +99,15 @@ namespace WebAPI_MAM.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Mail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -118,11 +123,13 @@ namespace WebAPI_MAM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Nss")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("height")
                         .HasColumnType("float");
+
+                    b.Property<string>("nss")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
 
                     b.Property<string>("sicknessHistory")
                         .HasColumnType("nvarchar(max)");
@@ -143,75 +150,93 @@ namespace WebAPI_MAM.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("appointmentsid")
-                        .HasColumnType("int");
-
                     b.Property<string>("cel")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("mail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("medicInfoId")
+                    b.Property<int>("medicInfoId")
                         .HasColumnType("int");
 
                     b.Property<string>("name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("phone")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("appointmentsid");
-
-                    b.HasIndex("medicInfoId");
+                    b.HasIndex("medicInfoId")
+                        .IsUnique();
 
                     b.ToTable("Patients");
                 });
 
             modelBuilder.Entity("WebAPI_MAM.Entities.Appointments", b =>
                 {
-                    b.HasOne("WebAPI_MAM.Entities.Doctors", "Doctors")
+                    b.HasOne("WebAPI_MAM.Entities.Diagnosis", "diagnostic")
+                        .WithOne("appointment")
+                        .HasForeignKey("WebAPI_MAM.Entities.Appointments", "diagnosticId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI_MAM.Entities.Doctors", "doctor")
                         .WithMany("appointments")
-                        .HasForeignKey("DoctorsId");
+                        .HasForeignKey("doctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Doctors");
-                });
+                    b.HasOne("WebAPI_MAM.Entities.Patients", "patient")
+                        .WithMany("appointments")
+                        .HasForeignKey("patientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("WebAPI_MAM.Entities.Diagnosis", b =>
-                {
-                    b.HasOne("WebAPI_MAM.Entities.Appointments", null)
-                        .WithMany("diagnosis")
-                        .HasForeignKey("Appointmentsid");
+                    b.Navigation("diagnostic");
+
+                    b.Navigation("doctor");
+
+                    b.Navigation("patient");
                 });
 
             modelBuilder.Entity("WebAPI_MAM.Entities.Patients", b =>
                 {
-                    b.HasOne("WebAPI_MAM.Entities.Appointments", "appointments")
-                        .WithMany("patients")
-                        .HasForeignKey("appointmentsid");
-
                     b.HasOne("WebAPI_MAM.Entities.MedicInfo", "medicInfo")
-                        .WithMany()
-                        .HasForeignKey("medicInfoId");
-
-                    b.Navigation("appointments");
+                        .WithOne("patient")
+                        .HasForeignKey("WebAPI_MAM.Entities.Patients", "medicInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("medicInfo");
                 });
 
-            modelBuilder.Entity("WebAPI_MAM.Entities.Appointments", b =>
+            modelBuilder.Entity("WebAPI_MAM.Entities.Diagnosis", b =>
                 {
-                    b.Navigation("diagnosis");
-
-                    b.Navigation("patients");
+                    b.Navigation("appointment")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WebAPI_MAM.Entities.Doctors", b =>
+                {
+                    b.Navigation("appointments");
+                });
+
+            modelBuilder.Entity("WebAPI_MAM.Entities.MedicInfo", b =>
+                {
+                    b.Navigation("patient")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("WebAPI_MAM.Entities.Patients", b =>
                 {
                     b.Navigation("appointments");
                 });
