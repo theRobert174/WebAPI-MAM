@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using WebAPI_MAM.Entities;
 
 namespace WebAPI_MAM.Controllers
@@ -10,10 +12,12 @@ namespace WebAPI_MAM.Controllers
     public class PatientsController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly ILogger<PatientsController> logger;
 
-        public PatientsController(ApplicationDbContext context)
+        public PatientsController(ApplicationDbContext context, ILogger<PatientsController> logger)
         {
             this.dbContext = context;
+            this.logger = logger;
         }
 
         [HttpGet] //Lista de los pacientes
@@ -61,6 +65,14 @@ namespace WebAPI_MAM.Controllers
             }
 
             var pacienteDB = await dbContext.Patients.Include(m => m.medicInfo).FirstOrDefaultAsync(p => p.Id == id);
+
+            //Esto son opciones para evitar ciclos al momento de imprimir algo con el logger 
+            JsonSerializerOptions options = new JsonSerializerOptions { 
+                ReferenceHandler = ReferenceHandler.IgnoreCycles
+            };
+
+            string extract = JsonSerializer.Serialize(pacienteDB, options); //transforma las propiedades del obejto en texto que se pueda imprimir en el logger
+            logger.LogWarning($"Paciente encontrado con info medica {extract}");
                 
             Type tipoBody = patient.GetType();
             Type tipoDB = pacienteDB.GetType();
@@ -70,11 +82,15 @@ namespace WebAPI_MAM.Controllers
             {
                 PropertyInfo propDB = tipoDB.GetProperty(prop.Name);
                 
-                if(propDB != null && propDB.CanWrite)
+                if(propDB != null && propDB.CanWrite && !prop.Name.Contains("medicInfoId") && (int)prop.GetValue(patient) != 0)
                 {
+                    logger.LogWarning($"Nombre de propiedad {prop.Name} y value {prop.GetValue(patient)}");
                     propDB.SetValue(pacienteDB, prop.GetValue(patient));
                 }
             }
+
+            string newOne = JsonSerializer.Serialize(pacienteDB, options);
+            logger.LogWarning($"Paciente con datos alterados {newOne}");
 
             dbContext.Update(pacienteDB);
             await dbContext.SaveChangesAsync();
