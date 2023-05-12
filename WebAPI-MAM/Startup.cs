@@ -1,4 +1,7 @@
-﻿namespace WebAPI_MAM
+﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+
+namespace WebAPI_MAM
 {
     public class Startup
     {
@@ -14,10 +17,21 @@
 
             // Add services to the container.
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x =>
+            {
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            services.AddDbContext<ApplicationDbContext>(options => //Connection DataBase
+                options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")
+                )
+            ); 
+
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c=>
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "WebAPI_MAM", Version="v1" }
+                )
+            );
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
