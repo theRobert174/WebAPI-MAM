@@ -27,6 +27,8 @@ namespace WebAPI_MAM
                 )
             ); 
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c=>
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "WebAPI_MAM", Version="v1" }

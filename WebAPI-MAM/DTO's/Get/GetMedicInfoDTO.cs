@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebAPI_MAM.DTO_s
+namespace WebAPI_MAM.DTO_s.Get
 {
-    public class MedicInfoDTO
+    public class GetMedicInfoDTO
     {
-        public int NSS { get; set; }
-
+        public int Id { get; set; }
+        [Required]
+        [StringLength(16)]
         public string nss { get; set; }
 
         [Required]
