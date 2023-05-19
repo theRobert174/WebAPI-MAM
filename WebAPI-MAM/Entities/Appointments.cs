@@ -26,8 +26,7 @@ namespace WebAPI_MAM.Entities
         public int patientId { get; set; }
         public Patients patient { get; set; }
 
-        [ForeignKey("diagnostic")]
-        public int diagnosticId { get; set; }
+
         public Diagnosis diagnostic { get; set; }
     }
 }

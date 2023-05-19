@@ -20,6 +20,8 @@ namespace WebAPI_MAM.Entities
 
         public string sicknessHistory { get; set; }
 
+        [ForeignKey("patient")]    
+        public int patientId { get; set; }
         public Patients patient { get; set; } //No agregar REQUIRED, sino desde PatrientController Post retorna BadRequest
     }
 }

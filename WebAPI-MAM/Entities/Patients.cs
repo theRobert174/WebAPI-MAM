@@ -28,11 +28,6 @@ namespace WebAPI_MAM.Entities
 
         public List<Appointments> appointments { get; set; }
 
-        [Required(ErrorMessage = "Datos medicos del paciente no establecidos")]
-        [ForeignKey("medicInfo")]
-        public int medicInfoId { get; set; }
         public MedicInfo medicInfo { get; set; }
-
-
     }
 }
