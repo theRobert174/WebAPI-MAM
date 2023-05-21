@@ -19,6 +19,7 @@ namespace WebAPI_MAM.DTO_s.Get
         public int doctorId { get; set; }
         [Required]
         public string doctorName { get; set; }
+        public int diagId { get; set; }
 
         public GetDiagDTO diagnostic { get; set; }
     }

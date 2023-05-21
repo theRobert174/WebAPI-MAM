@@ -26,7 +26,7 @@ namespace WebAPI_MAM.Entities
         public int patientId { get; set; }
         public Patients patient { get; set; }
 
-
+        public int diagId { get; set; }
         public Diagnosis diagnostic { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebAPI_MAM.Validators;
 
 namespace WebAPI_MAM.Entities
 {
@@ -16,6 +17,8 @@ namespace WebAPI_MAM.Entities
         public string mail { get; set; }
 
         [Required]
+        //[FirstLetterUppercase]
+        //[PasswordValidation]
         public string password { get; set; }
 
         [Required]
@@ -28,6 +31,7 @@ namespace WebAPI_MAM.Entities
 
         public List<Appointments> appointments { get; set; }
 
+        public int medicInfoId { get; set; }
         public MedicInfo medicInfo { get; set; }
     }
 }

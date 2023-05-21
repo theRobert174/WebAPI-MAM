@@ -13,11 +13,11 @@ namespace WebAPI_MAM.DTO_s.Set
         public string Status { get;set;}
 
         [Required]
-        public int DocId { get;set;}
+        public int doctorId { get;set;}
 
         [Required]
         public int PatientId { get;set;}
 
-        public int Diagid { get;set;}
+        //public int Diagid { get;set;}
     }
 }

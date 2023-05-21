@@ -15,5 +15,6 @@ namespace WebAPI_MAM.DTO_s.Set
         public double height { get; set; }
 
         public string sicknessHistory { get; set; }
+
     }
 }

@@ -15,11 +15,13 @@ namespace WebAPI_MAM.Utilities
             CreateMap<PatientDTO, Patients>();
             CreateMap<MedicInfoDTO, MedicInfo>();
             CreateMap<DoctorDTO, Doctors>();
+            CreateMap<Doctors, DoctorDTO>();
             CreateMap<AptmDTO, Appointments>();
             CreateMap<DiagnosisDTO, Diagnosis>();
 
             //Update
             CreateMap<UpPatientDTO, Patients>();
+           // CreateMap<UpDoctorDTO, Doctors>().ReverseMap();
 
             //DTO Get
 
@@ -96,13 +98,13 @@ namespace WebAPI_MAM.Utilities
                 result.Add(new GetAptmDTO()
                 {
                     Id = aptm.Id,
-                    Date = aptm.Date,
+                    Date = aptm.Date.Date,
                     Status = aptm.Status,
                     patientId = aptm.patientId,
                     patientName = aptm.patient.name,
                     doctorId = aptm.doctorId,
                     doctorName = aptm.doctor.Name,
-                    //diagnostic = aptm.diagnostic
+                    diagId = aptm.diagId
 
                 });
             }

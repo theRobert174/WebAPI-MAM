@@ -21,8 +21,5 @@ namespace WebAPI_MAM.DTO_s.Set
         [Required]
         [Phone]
         public string cel { get; set; }
-
-        [Required(ErrorMessage = "Datos medicos del paciente no establecidos")]
-        public MedicInfoDTO medicInfo { get; set; }
     }
 }

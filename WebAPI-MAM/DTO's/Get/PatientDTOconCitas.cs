@@ -2,6 +2,6 @@
 {
     public class PatientDTOconCitas : GetPatientDTO //Valores del pacienta y la lista de citas que tiene 
     {
-        public List<GetAptmDTO> appointments {get; set; }
+        public List<GetAptmDTO> Appointments {get; set; }
     }
 }

@@ -20,8 +20,8 @@ namespace WebAPI_MAM.Entities
         [Required]
         public string drugs { get; set; }
 
-        [ForeignKey("appointment")]
-        public int appointmentId { get; set; }
+        //[ForeignKey("appointment")]
+        public int appointmentId { get; set; } //?
         public Appointments appointment { get; set; }//No agregar REQUIRED, sino desde AptmController Post retorna BadRequest
     }
 }

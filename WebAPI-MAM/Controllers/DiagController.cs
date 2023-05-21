@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebAPI_MAM.DTO_s.Set;
 using WebAPI_MAM.Entities;
 
 namespace WebAPI_MAM.Controllers
@@ -9,10 +11,13 @@ namespace WebAPI_MAM.Controllers
     public class DiagController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public DiagController(ApplicationDbContext context)
+        public DiagController(ApplicationDbContext context,  IMapper mapper)
         {
             this.dbContext = context;
+            this.mapper = mapper;
+
         }
 
         [HttpGet] //Lista de los doctores
@@ -21,14 +26,27 @@ namespace WebAPI_MAM.Controllers
             return await dbContext.Diagnosis.ToListAsync();
 
         }
-        //No se puede agregar diagnosticos desde aqui, se tiene que modificando la cita
-        /*[HttpPost]
-        public async Task<ActionResult<Diagnosis>> Post([FromBody] Diagnosis diagnosis)
+        
+
+        [HttpPost]
+        public async Task<ActionResult<Diagnosis>> Post([FromBody] DiagnosisDTO diagnosis)
         {
-            dbContext.Add(diagnosis);
+            var APTExists = await dbContext.Appointments.AnyAsync(x => x.Id == diagnosis.appointmentId);
+            if (!APTExists)
+            {
+                return BadRequest("No existe cita en la base de datos con ese Id");
+            }
+            var diagnosisDB = mapper.Map<Diagnosis>(diagnosis);
+            dbContext.Add(diagnosisDB);
+            await dbContext.SaveChangesAsync();
+
+            var Apointment = await dbContext.Appointments.FirstOrDefaultAsync(x => x.Id == diagnosis.appointmentId);
+
+            Apointment.diagId = diagnosisDB.Id;
+            dbContext.Update(Apointment);
             await dbContext.SaveChangesAsync();
             return Ok();
-        }*/
+        }
 
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] Diagnosis diagnosis, [FromHeader] int id)

@@ -8,11 +8,15 @@ using WebAPI_MAM.DTO_s.Get;
 using WebAPI_MAM.DTO_s.Set;
 using WebAPI_MAM.DTO_s.Update;
 using WebAPI_MAM.Entities;
+using Microsoft.Extensions.Logging;
 
 namespace WebAPI_MAM.Controllers
 {
     [ApiController]
     [Route("MAM/Patients")]
+
+    //Get --------------------------------------------
+
     public class PatientsController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -34,7 +38,7 @@ namespace WebAPI_MAM.Controllers
 
             return patientsDTO;
         }
-        
+
         [HttpGet("Get")]
         public async Task<ActionResult<GetPatientDTO>> GetById([FromQuery] int id)
         {
@@ -50,18 +54,43 @@ namespace WebAPI_MAM.Controllers
             return patientDTO;
         }
 
-        [HttpPost]
+        [HttpGet("GetPatientsAptm")]
+        public async Task<ActionResult<PatientDTOconCitas>> GetAll()
+        {
+            //Incluir las la relación que tiene el paciente con sus citas y luego incluir el diagnostico de esas citas
+            var patients = await dbContext.Patients.Include(Patients => Patients.appointments)
+            .ThenInclude(Appointments => Appointments.diagnostic).ToListAsync();
+            return mapper.Map<PatientDTOconCitas>(patients);
+        }
+
+        //Post --------------------------------------------
+        [HttpPost ("PostPatient")]
         public async Task<ActionResult<PatientDTO>> Post([FromBody] PatientDTO patientDTO)
         {
             //TODO: Comprobaciones pendientes
-
+            
             var patient = mapper.Map<Patients>(patientDTO);
             dbContext.Add(patient);
             await dbContext.SaveChangesAsync();
 
             var getPatientDTO = mapper.Map<GetPatientDTO>(patient);
-            return Ok(CreatedAtRoute("Patients", new {Id = patient.Id},getPatientDTO));
+            return Ok(patientDTO);
         }
+        /*
+        [HttpPost("PostMedicInfo")]
+        public async Task<ActionResult<MedicInfoDTO>> Post([FromBody] MedicInfoDTO medicinfoDTO)
+        {
+            //TODO: Comprobaciones pendientes
+
+            var medicInfo = mapper.Map<MedicInfoDTO>(medicinfoDTO);
+            dbContext.Add(medicinfoDTO);
+            await dbContext.SaveChangesAsync();
+
+            var getmedicInfoDTO = mapper.Map<GetMedicInfoDTO>(medicInfo);
+            return Ok(CreatedAtRoute("Patients", new { Id = patient.Id }, getPatientDTO));
+        }*/
+
+        //Put --------------------------------------------
 
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] UpPatientDTO patientDTO, [FromHeader] int id)

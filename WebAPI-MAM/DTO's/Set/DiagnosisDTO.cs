@@ -16,6 +16,7 @@ namespace WebAPI_MAM.DTO_s.Set
         [Required]
         public string drugs { get; set; }
 
-        public int appointmentId { get; set; }
+        //Puede cambiar,el "?" lo puse para que al momento de hacer un diagnostico, no pida una cita inmediatamente
+        public int/*?*/ appointmentId { get; set; }
     }
 }
