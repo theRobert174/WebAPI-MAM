@@ -36,17 +36,18 @@ namespace WebAPI_MAM.Controllers
         [HttpGet("GetAllDoctors")] //Lista de los doctores
         public async Task<ActionResult<List<Doctors>>> GetAll()
         {
-            var getDoctor = await dbContext.Doctors.ToListAsync();
+            var getDoctor = await dbContext.Doctors.Include(x=> x.appointments).ToListAsync();
             logger.LogInformation("Si se pudo completar el proceso de obtener a los doctores");
             return mapper.Map<List<Doctors>>(getDoctor);
 
         }
 
-        [HttpGet("GetAllDoctorswithAppointments")] 
+        [HttpGet("GetAllDoctorswithAppointments")]
         public async Task<ActionResult<List<DoctorsDTOconCitas>>> Get()
         {
-           
-            var Doctor = await dbContext.Doctors.Include(Appointments => Appointments.appointments).ToListAsync();
+
+            var Doctor = await dbContext.Appointments.Where(x => x.Status == "Pendiente" || x.Status == "pendiente").
+                Include(x => x.doctor).ToListAsync();
 
             return mapper.Map<List<DoctorsDTOconCitas>>(Doctor);
         }

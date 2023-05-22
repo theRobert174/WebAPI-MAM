@@ -55,12 +55,11 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpGet("GetPatientsAptm")]
-        public async Task<ActionResult<PatientDTOconCitas>> GetAll([FromHeader] int id)
+        public async Task<ActionResult<GetPatientDTO>> GetAll([FromHeader] int id)
         {
             //Incluir las la relación que tiene el paciente con sus citas y luego incluir el diagnostico de esas citas
-            var patients = await dbContext.Patients.Where(Patients => Patients.Id == id).Include(Patients => Patients.appointments)
-            .ToListAsync();
-            return mapper.Map<PatientDTOconCitas>(patients);
+            var patients = await dbContext.Patients.Where(Patients => Patients.Id == id).ToListAsync();
+            return mapper.Map<GetPatientDTO>(patients);
         }
 
         //Post --------------------------------------------

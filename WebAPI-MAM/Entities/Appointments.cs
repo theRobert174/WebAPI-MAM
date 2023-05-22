@@ -3,6 +3,7 @@ using Microsoft.Identity.Client;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebAPI_MAM.Validators;
+using Newtonsoft.Json;
 
 namespace WebAPI_MAM.Entities
 {
@@ -21,6 +22,7 @@ namespace WebAPI_MAM.Entities
         [Required]
         [ForeignKey("doctor")]
         public int doctorId { get; set; }
+        [JsonIgnore]
         public Doctors doctor { get; set; }
 
         [Required]
