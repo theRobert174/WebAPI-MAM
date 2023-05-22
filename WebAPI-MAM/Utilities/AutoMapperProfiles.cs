@@ -49,7 +49,7 @@ namespace WebAPI_MAM.Utilities
             CreateMap<Patients, PatientDTOconCitas>().ForMember(pDTO => pDTO.appointments, opt => opt.MapFrom(MapPatientDTOAptms));
 
             CreateMap<Doctors, GetDoctorDTO>();
-            CreateMap<Doctors, DoctorsDTOconCitas>().ForMember(dDTO => dDTO.appointments, opt => opt.MapFrom(MapDoctorDTOAptms));
+            //CreateMap<Doctors, DoctorsDTOconCitas>().ForMember(dDTO => dDTO.appointments, opt => opt.MapFrom(MapDoctorDTOAptms));
 
            CreateMap<Appointments, AptmDTOwithDiag>().ForMember(aDTO => aDTO.diagnostic, opt => opt.MapFrom(MapAptmDTOwDiag));
 

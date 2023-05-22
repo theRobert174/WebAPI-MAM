@@ -49,7 +49,14 @@ namespace WebAPI_MAM.Controllers
             var Doctor = await dbContext.Appointments.Where(x => x.Status == "Pendiente" || x.Status == "pendiente").
                 Include(x => x.doctor).ToListAsync();
 
-            return mapper.Map<List<DoctorsDTOconCitas>>(Doctor);
+            logger.LogInformation("Doctor DB", Doctor);
+
+            var DoctorMaped = mapper.Map<List<DoctorsDTOconCitas>>(Doctor);
+
+            logger.LogInformation("Doctor Mapped", DoctorMaped);
+
+
+            return DoctorMaped;
         }
 
         [HttpGet("AppointmentsbyDate/{date:DateTime}")]
