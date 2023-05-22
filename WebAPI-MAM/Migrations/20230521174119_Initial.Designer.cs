@@ -12,7 +12,7 @@ using WebAPI_MAM;
 namespace WebAPI_MAM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230520191246_Initial")]
+    [Migration("20230521174119_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -238,6 +238,9 @@ namespace WebAPI_MAM.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("diagId")
                         .HasColumnType("int");
 
@@ -248,6 +251,8 @@ namespace WebAPI_MAM.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("doctorId");
 
@@ -438,6 +443,10 @@ namespace WebAPI_MAM.Migrations
 
             modelBuilder.Entity("WebAPI_MAM.Entities.Appointments", b =>
                 {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.HasOne("WebAPI_MAM.Entities.Doctors", "doctor")
                         .WithMany("appointments")
                         .HasForeignKey("doctorId")
@@ -449,6 +458,8 @@ namespace WebAPI_MAM.Migrations
                         .HasForeignKey("patientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
 
                     b.Navigation("doctor");
 

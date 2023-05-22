@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebAPI_MAM.DTO_s.Set
+namespace WebAPI_MAM.DTO_s.Update
 {
-    public class MedicInfoDTO
+    public class UpMedicInfo
     {
         [Required]
         [StringLength(16)]
@@ -15,7 +15,5 @@ namespace WebAPI_MAM.DTO_s.Set
         public double height { get; set; }
 
         public string sicknessHistory { get; set; }
-
-        public int patientId { get; set; }
     }
 }

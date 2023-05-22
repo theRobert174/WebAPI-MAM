@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI_MAM.DTO_s.Set;
+using WebAPI_MAM.DTO_s.Update;
 using WebAPI_MAM.Entities;
 
 namespace WebAPI_MAM.Controllers
@@ -12,11 +13,13 @@ namespace WebAPI_MAM.Controllers
     {
         private readonly ApplicationDbContext dbContext;
         private readonly IMapper mapper;
+        private readonly ILogger<MeInfController> logger;
 
-        public MeInfController(ApplicationDbContext context, IMapper mapper)
+        public MeInfController(ApplicationDbContext context, IMapper mapper, ILogger<MeInfController> logger)
         {
             this.dbContext = context;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
         [HttpGet] //Lista de datos medicos
@@ -43,21 +46,38 @@ namespace WebAPI_MAM.Controllers
         }*/
 
         [HttpPost]
-        public async Task<ActionResult<Diagnosis>> Post([FromBody] MedicInfoDTO medicInfo, [FromHeader] int PaitientId )
+        public async Task<ActionResult> Post([FromBody] MedicInfoDTO medicInfoDTO)
         {
-            var APTExists = await dbContext.Patients.AnyAsync(x => x.Id == PaitientId);
-            if (!APTExists)
+             var patientExist = await dbContext.Patients.AnyAsync(x => x.Id == medicInfoDTO.patientId);
+            if (!patientExist)
             {
-                return BadRequest("No existe cita en la base de datos con ese Id");
+                return BadRequest("No existe paciente en la base de datos con ese Id");
             }
-            var medicInfoDB = mapper.Map<Diagnosis>(medicInfo);
-            dbContext.Add(medicInfoDB);
+            var medicInfoDb = mapper.Map<MedicInfo>(medicInfoDTO);
+            dbContext.Add(medicInfoDb);
             await dbContext.SaveChangesAsync();
 
-            var Paciente = await dbContext.Patients.FirstOrDefaultAsync(x => x.Id == PaitientId);
+            var patients = await dbContext.Patients.FirstOrDefaultAsync(x => x.Id == medicInfoDTO.patientId);
 
-            Paciente.medicInfoId = medicInfoDB.Id;
-            dbContext.Update(Paciente);
+            patients.medicInfoId = medicInfoDb.Id;
+            dbContext.Update(patients);
+            await dbContext.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPut("EditMedicInfo")]
+        public async Task<ActionResult> Put([FromBody] MedicInfoDTO medicInfoDTO, [FromHeader] int id)
+        {
+            var exist = await dbContext.MedicInfo.AnyAsync(p => p.Id == id);
+            if (!exist)
+            {
+                return NotFound($"Paciente con el id: {id} no existe");
+            }
+
+            var medicInfoDb = mapper.Map<MedicInfo>(medicInfoDTO);
+            //medicInfoDb.Id = id;
+            dbContext.Update(medicInfoDb);
+
             await dbContext.SaveChangesAsync();
             return Ok();
         }

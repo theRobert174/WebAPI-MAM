@@ -1,11 +1,16 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using WebAPI_MAM.DTO_s.Get;
 using WebAPI_MAM.DTO_s.Set;
 using WebAPI_MAM.Entities;
+using WebAPI_MAM.DTO_s.Update;
 
 namespace WebAPI_MAM.Controllers
 {
@@ -16,21 +21,42 @@ namespace WebAPI_MAM.Controllers
     {
         private readonly ApplicationDbContext dbContext;
         private readonly IMapper mapper;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly ILogger<AptmController> logger;
 
-        public AptmController(ApplicationDbContext context,  IMapper mapper)
+        public AptmController(ApplicationDbContext context,  IMapper mapper, ILogger<AptmController> logger)
         {
             this.dbContext = context;
             this.mapper=mapper;
+            this.logger = logger;
         }
 
         [HttpGet] //Lista de todas las citas
         public async Task<ActionResult<List<GetAptmDTO>>> Get()
         {
-           var aptm= await dbContext.Appointments.Include(x=>x.doctor).Include(x => x.patient).ToListAsync();
+            var aptm = await dbContext.Appointments.Include(x => x.doctor).Include(x => x.patient).ToListAsync();
             return mapper.Map<List<GetAptmDTO>>(aptm);
 
         }
-        [HttpGet("DcotorIdAndDate")]//Lista de todas las citas en x dia
+
+        [HttpGet("AptmWithDiag")] //Lista de todas las citas con diagnostico
+        public async Task<ActionResult<List<AptmDTOwithDiag>>> GetwithDiag()
+        {
+            var aptm = await dbContext.Appointments.Include(x => x.patient.name).Include(x => x.doctor.Name)
+                .Include(x => x.diagnostic).ToListAsync();
+            return mapper.Map<List<AptmDTOwithDiag>>(aptm);
+
+        }
+
+        /*[HttpGet("AptmWithAll")]
+        public async Task<ActionResult<List<AptmDTOwithDiag>>> GetwithDiag()
+        {
+            var aptm = await dbContext.Appointments.Include(x => x.doctor).Include(x => x.patient).ToListAsync();
+            return mapper.Map<List<AptmDTOwithDiag>>(aptm);
+
+        }*/
+
+        [HttpGet("DoctorIdAndDate")]//Lista de todas las citas en x dia
         public async Task<ActionResult<List<GetAptmDTO>>> GetIdDate([FromHeader]int Doctorid, [FromHeader] string date)
         {
             var parsedDate = DateTime.Parse(date);
@@ -38,7 +64,8 @@ namespace WebAPI_MAM.Controllers
             var InicioDiA = new DateTime(parsedDate.Year, parsedDate.Month, parsedDate.Day, 0, 0, 1);
             var FinalDia = new DateTime(parsedDate.Year, parsedDate.Month, parsedDate.Day, 23, 59, 59);
 
-            var aptm = await dbContext.Appointments.Where(x => x.Date > InicioDiA && x.Date < FinalDia && x.doctorId==Doctorid).Include(x => x.doctor).Include(x => x.patient).ToListAsync();
+            var aptm = await dbContext.Appointments.Where(x => x.Date > InicioDiA && x.Date < FinalDia && x.doctorId==Doctorid)
+                .Include(x => x.doctor).Include(x => x.patient).ToListAsync();
             return mapper.Map<List<GetAptmDTO>>(aptm);
 
         }
@@ -46,11 +73,11 @@ namespace WebAPI_MAM.Controllers
         [HttpGet("DoctorIdPatientNameDate")] //BUSCAR POR NOMBRE ID MEDICO Y FECHA
         public async Task<ActionResult<GetAptmDTO>> GetporID(int idMedico, string nombrePaciente, DateTime fecha)
         {
-            // PARA VALIDAR COSAS CON DOCUTORIES USA AUTHORIZA IS DOCTOR O CHECA SI TIENE EL CLAIM DOCTOR
-            //var DOCTORClaim = HttpContext.User.Claims.Where(claim => claim.Type == "IsDoctor").FirstOrDefault();
+            //PARA VALIDAR COSAS CON DOCUTORIES USA AUTHORIZA IS DOCTOR O CHECA SI TIENE EL CLAIM DOCTOR
+            var DoctorClaim = HttpContext.User.Claims.Where(claim => claim.Type == "IsDoctor").FirstOrDefault();
 
-            //var email = DoctorClaim.Value;
-            //var usuario = await userManager.FindByEmailAsync(email);
+            var email = DoctorClaim.Value;
+            var usuario = await userManager.FindByEmailAsync(email);
 
             var aptm = await dbContext.Appointments.Where(x=> x.doctorId==idMedico && x.patient.name==nombrePaciente && x.Date==fecha)
                 .Include(x => x.doctor).Include(x => x.patient).FirstOrDefaultAsync();
@@ -59,9 +86,9 @@ namespace WebAPI_MAM.Controllers
         }
 
 
-        //[AllowAnonymous]
+        [AllowAnonymous]
         [HttpGet("{PatientId:int}")]
-        public async Task<ActionResult<List<GetAptmDTO>>> GetByIdEventReminder(int PatientId)
+        public async Task<ActionResult<List<GetAptmDTO>>> GetByIdPatientReminder(int PatientId)
         {
 
             var PatientExists = await dbContext.Appointments.AnyAsync(x => x.Id == PatientId);
@@ -73,13 +100,14 @@ namespace WebAPI_MAM.Controllers
             var diaDespues = DateTime.Now.AddDays(1);
             var hoy = DateTime.Now;
 
-            var UserEvents = await dbContext.Appointments.Where(x => x.patientId == PatientId && x.Date < diaDespues && x.Date > hoy).ToListAsync();
+            var aptmFamilies = await dbContext.Appointments.Where(x => x.patientId == PatientId && x.Date < diaDespues && x.Date > hoy).ToListAsync();
 
-            return mapper.Map<List<GetAptmDTO>>(UserEvents);
+            return mapper.Map<List<GetAptmDTO>>(aptmFamilies);
 
         }
 
         [HttpPost("NewAppointment")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> Post([FromBody] AptmDTO aptmDTO)
         {
 
@@ -100,7 +128,7 @@ namespace WebAPI_MAM.Controllers
 
             //Verificar que no este ocupada la hora y dia
             var CitaOcupada = await dbContext.Appointments.AnyAsync(x => x.Date == aptmDTO.Date);
-            if (!CitaOcupada)
+            if (CitaOcupada)
             {
                 return BadRequest("Cita ocupada");
             }
@@ -116,7 +144,8 @@ namespace WebAPI_MAM.Controllers
 
 
 
-        [HttpPut]
+        [HttpPut("EditAptm")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> Put([FromBody] AptmDTO aptmDTO, [FromHeader] int id)
         {
 
@@ -139,7 +168,7 @@ namespace WebAPI_MAM.Controllers
                 return BadRequest("No existen Pacientes en la base de datos con ese Id");
             }
             var CitaOcupada = await dbContext.Appointments.AnyAsync(x => x.Date == aptmDTO.Date);
-            if (!CitaOcupada)
+            if (CitaOcupada)
             {
                 return BadRequest("Cita ocupada");
             }
@@ -160,6 +189,8 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpDelete]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+
         public async Task<ActionResult> Delete([FromHeader] int id)
         {
             var exist = await dbContext.Appointments.AnyAsync(x => x.Id == id);
@@ -178,6 +209,33 @@ namespace WebAPI_MAM.Controllers
             return Ok();
 
         }
+
+        //Patch--------------------
+        [HttpPatch(" ChangeDate/{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        public async Task<ActionResult> Patch([FromRoute] int id, [FromRoute] DateTime date)
+         {
+            var exist = await dbContext.Appointments.AnyAsync(x => x.Id == id);
+            if(!exist)
+            {
+                return NotFound("No existe la cita a la que quieres acceder");
+            }
+
+            if(id == null)
+            {
+                return BadRequest("Debe de poner el id de la cita");
+            }
+
+            //Encontrar la primera cita donde el id sea igual al dado
+            var UpaptmDTOdate = await dbContext.Appointments.FirstOrDefaultAsync(x => x.Id == id);
+
+            var aptm = mapper.Map<UpAptmDTOdate>(UpaptmDTOdate);
+            aptm.Date = date;
+            dbContext.Update(aptm);
+            await dbContext.SaveChangesAsync();
+            return Ok();
+
+         }
 
     }
 

@@ -55,20 +55,20 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpGet("GetPatientsAptm")]
-        public async Task<ActionResult<PatientDTOconCitas>> GetAll()
+        public async Task<ActionResult<PatientDTOconCitas>> GetAll([FromHeader] int id)
         {
             //Incluir las la relación que tiene el paciente con sus citas y luego incluir el diagnostico de esas citas
-            var patients = await dbContext.Patients.Include(Patients => Patients.appointments)
-            .ThenInclude(Appointments => Appointments.diagnostic).ToListAsync();
+            var patients = await dbContext.Patients.Where(Patients => Patients.Id == id).Include(Patients => Patients.appointments)
+            .ToListAsync();
             return mapper.Map<PatientDTOconCitas>(patients);
         }
 
         //Post --------------------------------------------
-        [HttpPost ("PostPatient")]
+        [HttpPost("PostPatient")]
         public async Task<ActionResult<PatientDTO>> Post([FromBody] PatientDTO patientDTO)
         {
             //TODO: Comprobaciones pendientes
-            
+
             var patient = mapper.Map<Patients>(patientDTO);
             dbContext.Add(patient);
             await dbContext.SaveChangesAsync();
@@ -108,6 +108,8 @@ namespace WebAPI_MAM.Controllers
             await dbContext.SaveChangesAsync();
             return Ok(patient);
         }
+
+       
 
         [HttpDelete]
         public async Task<ActionResult> Delete([FromHeader] int id)

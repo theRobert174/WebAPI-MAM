@@ -29,18 +29,19 @@ namespace WebAPI_MAM.Controllers
         
 
         [HttpPost]
-        public async Task<ActionResult<Diagnosis>> Post([FromBody] DiagnosisDTO diagnosis)
+        public async Task<ActionResult> Post([FromBody] DiagnosisDTO diagnosisDTO, [FromHeader] int idCita)
         {
-            var APTExists = await dbContext.Appointments.AnyAsync(x => x.Id == diagnosis.appointmentId);
+            var APTExists = await dbContext.Appointments.AnyAsync(x => x.Id == idCita);
             if (!APTExists)
             {
                 return BadRequest("No existe cita en la base de datos con ese Id");
             }
-            var diagnosisDB = mapper.Map<Diagnosis>(diagnosis);
+            //
+            var diagnosisDB = mapper.Map<Diagnosis>(diagnosisDTO);
             dbContext.Add(diagnosisDB);
             await dbContext.SaveChangesAsync();
 
-            var Apointment = await dbContext.Appointments.FirstOrDefaultAsync(x => x.Id == diagnosis.appointmentId);
+            var Apointment = await dbContext.Appointments.FirstOrDefaultAsync(x => x.Id == idCita);
 
             Apointment.diagId = diagnosisDB.Id;
             dbContext.Update(Apointment);

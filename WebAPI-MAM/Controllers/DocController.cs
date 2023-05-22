@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Text.Json;
-//using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.JsonPatch;
 using System.Text.Json.Serialization;
 using WebAPI_MAM.DTO_s.Get;
 using WebAPI_MAM.DTO_s.Set;
@@ -15,6 +17,7 @@ namespace WebAPI_MAM.Controllers
 {
     [ApiController]
     [Route("MAM/Doctores")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
 
     public class DocController : ControllerBase
     {
@@ -43,7 +46,7 @@ namespace WebAPI_MAM.Controllers
         public async Task<ActionResult<List<DoctorsDTOconCitas>>> Get()
         {
            
-            var Doctor = await dbContext.Doctors.Include(x => x.appointments).ToListAsync();
+            var Doctor = await dbContext.Doctors.Include(Appointments => Appointments.appointments).ToListAsync();
 
             return mapper.Map<List<DoctorsDTOconCitas>>(Doctor);
         }
@@ -114,7 +117,7 @@ namespace WebAPI_MAM.Controllers
         //Put--------------
 
         [HttpPut("UpdatebyId/{id:int}")]
-        public async Task<ActionResult> PutUser(DoctorDTO doctorDTO, [FromRoute] int id)
+        public async Task<ActionResult> PutDoctor(DoctorDTO doctorDTO, [FromRoute] int id)
         {
             var exists = await dbContext.Doctors.AnyAsync(x => x.Id == id);
             if (!exists)
@@ -122,7 +125,7 @@ namespace WebAPI_MAM.Controllers
                 return NotFound("Does not exist");
             }
 
-            var doctor = mapper.Map<DoctorDTO>(doctorDTO);
+            var doctor = mapper.Map<Doctors>(doctorDTO);
             //doctor.Id = doctor.id;
 
             dbContext.Update(doctor);
@@ -183,39 +186,7 @@ namespace WebAPI_MAM.Controllers
 
              }
 
-        //Patch--------------------
-       /* [HttpPatch("{id:int}")]
-        public async Task<ActionResult> Patch(int id, JsonPatchDocument<UpDoctorDTO> upDoctorDTO)
-        {
-            //En caso de no encontrar el objeto manda un badRequest 
-            if (upDoctorDTO == null) { logger.LogError("Esta vació"); return BadRequest(); }
-
-            //Encuentra en la base de datos al Doctor con ese Id
-            var doctor = await dbContext.Doctors.FirstOrDefaultAsync(x => x.Id == id);
-
-            //Si no hay, manda un badrequest
-            if (doctor == null) { logger.LogError("El ID del doctor no esta o no existe"); return NotFound(); }
-
-            //Mapo de nuestra variable Actualizar doctor a nuestro objeto UpDoctorDTO
-            var UpdateDoctor = mapper.Map<UpDoctorDTO>(doctor);
-
-            //Aplicar los cambios 
-            upDoctorDTO.ApplyTo(UpdateDoctor);
-
-            //Validarlo
-            var isValid = TryValidateModel(UpdateDoctor);
-
-            if (!isValid)
-            {
-                logger.LogError("No fue posible realizar los cambios");
-                return BadRequest(ModelState);
-            }
-
-            mapper.Map(upDoctorDTO, UpdateDoctor);
-
-            await dbContext.SaveChangesAsync();
-            return NoContent();
-        }*/
+        
 
     }
     

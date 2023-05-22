@@ -16,6 +16,6 @@ namespace WebAPI_MAM.DTO_s.Get
         [Required(ErrorMessage = "Datos medicos del paciente no establecidos")]
         public GetMedicInfoDTO MedicInfo { get; set; }
 
-        public List<GetAptmDTO> appointments { get; set; }
+       public List<GetAptmDTO> appointments { get; set; }
     }
 }

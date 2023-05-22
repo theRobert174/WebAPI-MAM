@@ -199,11 +199,17 @@ namespace WebAPI_MAM.Migrations
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     doctorId = table.Column<int>(type: "int", nullable: false),
                     patientId = table.Column<int>(type: "int", nullable: false),
-                    diagId = table.Column<int>(type: "int", nullable: false)
+                    diagId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Appointments_Doctors_doctorId",
                         column: x => x.doctorId,
@@ -273,6 +279,11 @@ namespace WebAPI_MAM.Migrations
                 name: "IX_Appointments_patientId",
                 table: "Appointments",
                 column: "patientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_UserId",
+                table: "Appointments",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -354,10 +365,10 @@ namespace WebAPI_MAM.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Appointments");
 
             migrationBuilder.DropTable(
-                name: "Appointments");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Doctors");

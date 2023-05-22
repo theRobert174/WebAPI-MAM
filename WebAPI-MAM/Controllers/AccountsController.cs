@@ -118,22 +118,22 @@ namespace WebApiAlumnosSeg.Controllers
             };
         }
 
-        [HttpPost("HacerAdmin")]
+        [HttpPost("HacerDoctor")]
         public async Task<ActionResult> HacerAdmin(UpAdminDTO upAdminDTO)
         {
             var usuario = await userManager.FindByEmailAsync(upAdminDTO.Email);
 
-            await userManager.AddClaimAsync(usuario, new Claim("EsAdmin", "1"));
+            await userManager.AddClaimAsync(usuario, new Claim("IsDoctor", "1"));
 
             return NoContent();
         }
 
-        [HttpPost("RemoverAdmin")]
+        [HttpPost("RemoverDoctor")]
         public async Task<ActionResult> RemoverAdmin(UpAdminDTO upAdminDTO)
         {
             var usuario = await userManager.FindByEmailAsync(upAdminDTO.Email);
 
-            await userManager.RemoveClaimAsync(usuario, new Claim("EsAdmin", "1"));
+            await userManager.RemoveClaimAsync(usuario, new Claim("IsDoctor", "1"));
 
             return NoContent();
         }

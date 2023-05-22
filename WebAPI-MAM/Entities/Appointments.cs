@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Identity.Client;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebAPI_MAM.Validators;
 
@@ -28,5 +30,9 @@ namespace WebAPI_MAM.Entities
 
         public int diagId { get; set; }
         public Diagnosis diagnostic { get; set; }
+
+        //Autorización 
+        public string UserId { get; set; }
+        public IdentityUser User { get; set; }
     }
 }

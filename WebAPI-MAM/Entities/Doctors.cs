@@ -16,10 +16,11 @@ namespace WebAPI_MAM.Entities
         public string Mail { get; set; }
 
         [Required]
-       // [FirstLetterUppercase]
+        //[FirstLetterUppercase]
         //[PasswordValidation]
         public string password { get; set; }
 
         public List<Appointments> appointments { get; set; }
+
     }
 }

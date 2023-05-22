@@ -18,13 +18,19 @@ namespace WebAPI_MAM.Utilities
             CreateMap<Doctors, DoctorDTO>();
             CreateMap<AptmDTO, Appointments>();
             CreateMap<DiagnosisDTO, Diagnosis>();
+           
 
             //Update
             CreateMap<UpPatientDTO, Patients>();
-           // CreateMap<UpDoctorDTO, Doctors>().ReverseMap();
+            CreateMap<UpAptmDTOdate, Appointments>();//.ReverseMap();
+            CreateMap<UpAptmDTOdoctor, Appointments>();
+            CreateMap<UpMedicInfo, MedicInfo>();
+            CreateMap<UpDoctorDTO, Doctors>();
+            //CreateMap<UpAdminDTO, Accoun>();
 
             //DTO Get
 
+           // CreateMap<List<Appointments>, List<GetAptmDTO>>();
             CreateMap<Patients, GetPatientDTO>()
                 .ForMember(dest => dest.MedicInfo, opt => opt.MapFrom(src => src.medicInfo))
                 .ForMember(dest => dest.appointments, opt => opt.MapFrom(src => src.appointments));
@@ -35,6 +41,9 @@ namespace WebAPI_MAM.Utilities
             CreateMap<Doctors, DoctorsDTOconCitas>()
                 .ForMember(dest => dest.appointments, opt => opt.MapFrom(MapDoctorDTOAptms));
 
+            CreateMap<Patients, PatientDTO>();
+            //CreateMap<Patients, PatientDTOconCitas>();
+
             //Others
             CreateMap<Patients, PatientDTOwithMedicInfo>().ForMember(pDTO => pDTO.medicInfoDTO, opt => opt.MapFrom(MapPatientDTOMedicInfo));
             CreateMap<Patients, PatientDTOconCitas>().ForMember(pDTO => pDTO.appointments, opt => opt.MapFrom(MapPatientDTOAptms));
@@ -42,7 +51,7 @@ namespace WebAPI_MAM.Utilities
             CreateMap<Doctors, GetDoctorDTO>();
             //CreateMap<Doctors, DoctorsDTOconCitas>().ForMember(dDTO => dDTO.appointments, opt => opt.MapFrom(MapDoctorDTOAptms));
 
-            CreateMap<Appointments, AptmDTOwithDiag>().ForMember(aDTO => aDTO.diagnostic, opt => opt.MapFrom(MapAptmDTOwDiag));
+           CreateMap<Appointments, AptmDTOwithDiag>().ForMember(aDTO => aDTO.diagnostic, opt => opt.MapFrom(MapAptmDTOwDiag));
 
         }
 
@@ -98,14 +107,13 @@ namespace WebAPI_MAM.Utilities
                 result.Add(new GetAptmDTO()
                 {
                     Id = aptm.Id,
-                    Date = aptm.Date.Date,
+                    Date = aptm.Date,
                     Status = aptm.Status,
                     patientId = aptm.patientId,
                     patientName = aptm.patient.name,
                     doctorId = aptm.doctorId,
                     doctorName = aptm.doctor.Name,
                     diagId = aptm.diagId
-
                 });
             }
             return result;
