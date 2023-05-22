@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebAPI_MAM.Validators;
+using Newtonsoft.Json;
 
 namespace WebAPI_MAM.Entities
 {
@@ -32,6 +33,7 @@ namespace WebAPI_MAM.Entities
         public List<Appointments> appointments { get; set; }
 
         public int medicInfoId { get; set; }
+        [JsonIgnore]
         public MedicInfo medicInfo { get; set; }
     }
 }

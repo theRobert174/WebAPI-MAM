@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace WebAPI_MAM.Entities
 {
@@ -22,6 +23,7 @@ namespace WebAPI_MAM.Entities
 
         //[ForeignKey("patient")]    
         public int patientId { get; set; }
+        //[JsonIgnore]
         public Patients patient { get; set; } //No agregar REQUIRED, sino desde PatrientController Post retorna BadRequest
     }
 }

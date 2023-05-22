@@ -107,7 +107,7 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpPost("NewAppointment")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> Post([FromBody] AptmDTO aptmDTO)
         {
 
@@ -145,7 +145,7 @@ namespace WebAPI_MAM.Controllers
 
 
         [HttpPut("EditAptm")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> Put([FromBody] AptmDTO aptmDTO, [FromHeader] int id)
         {
 
@@ -189,7 +189,7 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpDelete]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
 
         public async Task<ActionResult> Delete([FromHeader] int id)
         {
@@ -212,7 +212,7 @@ namespace WebAPI_MAM.Controllers
 
         //Patch--------------------
         [HttpPatch(" ChangeDate/{id:int}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> Patch([FromRoute] int id, [FromRoute] DateTime date)
          {
             var exist = await dbContext.Appointments.AnyAsync(x => x.Id == id);

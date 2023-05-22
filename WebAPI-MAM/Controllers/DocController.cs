@@ -17,7 +17,7 @@ namespace WebAPI_MAM.Controllers
 {
     [ApiController]
     [Route("MAM/Doctores")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
 
     public class DocController : ControllerBase
     {
