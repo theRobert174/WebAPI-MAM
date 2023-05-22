@@ -107,27 +107,28 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpPost("NewAppointment")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> Post([FromBody] AptmDTO aptmDTO)
         {
 
             //Una disculpa por los comentarios pero solo así entenderé paso a paso lo que hago 
-           
-                // Verificar si el doctor existe
-                var docExists = await dbContext.Doctors.AnyAsync(x => x.Id == aptmDTO.doctorId);
-                if (!docExists)
-                {
-                    return BadRequest("No existen doctores en la base de datos con ese Id");
-                }
-                // Verificar si el paciente existe
-                var PatientExists = await dbContext.Patients.AnyAsync(x => x.Id == aptmDTO.PatientId);
-                if (!PatientExists)
-                {
-                    return BadRequest("No existen Pacientes en la base de datos con ese Id");
-                }
+
+            // Verificar si el doctor existe
+            var docExists = await dbContext.Doctors.AnyAsync(x => x.Id == aptmDTO.doctorId);
+            if (!docExists)
+            {
+                return BadRequest("No existen doctores en la base de datos con ese Id");
+            }
+            // Verificar si el paciente existe
+            var PatientExists = await dbContext.Patients.AnyAsync(x => x.Id == aptmDTO.PatientId);
+            if (!PatientExists)
+            {
+                return BadRequest("No existen Pacientes en la base de datos con ese Id");
+            }
 
             //Verificar que no este ocupada la hora y dia
-            var CitaOcupada = await dbContext.Appointments.AnyAsync(x => x.Date == aptmDTO.Date);
+            var CitaOcupada = await dbContext.Appointments.AnyAsync(x => x.Date == aptmDTO.Date 
+            || x.Date.AddHours(1) > aptmDTO.Date);
             if (CitaOcupada)
             {
                 return BadRequest("Cita ocupada");
@@ -190,7 +191,6 @@ namespace WebAPI_MAM.Controllers
 
         [HttpDelete]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
-
         public async Task<ActionResult> Delete([FromHeader] int id)
         {
             var exist = await dbContext.Appointments.AnyAsync(x => x.Id == id);
