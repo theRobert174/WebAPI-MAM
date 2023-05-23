@@ -1,4 +1,5 @@
 Process Started
+<<<<<<< HEAD
 Excecuting Process: 22/05/2023 04:15:05
 Excecuting Process: 22/05/2023 04:17:05
 Process Started
@@ -133,3 +134,406 @@ Excecuting Process: 23/05/2023 12:26:14
 Excecuting Process: 23/05/2023 12:28:14
 Excecuting Process: 23/05/2023 12:30:14
 Excecuting Process: 23/05/2023 12:32:14
+=======
+Excecuting Process: 20/05/2023 12:42:24
+Process Started
+Excecuting Process: 20/05/2023 12:43:21
+Process Started
+Excecuting Process: 20/05/2023 12:44:42
+Process Started
+Excecuting Process: 20/05/2023 12:45:56
+Process Started
+Excecuting Process: 20/05/2023 12:48:35
+Process Started
+Excecuting Process: 20/05/2023 01:03:29
+Process Started
+Excecuting Process: 20/05/2023 01:08:18
+Process Started
+Excecuting Process: 20/05/2023 01:10:26
+Process Started
+Excecuting Process: 20/05/2023 01:13:29
+Excecuting Process: 20/05/2023 01:15:29
+Process Started
+Excecuting Process: 20/05/2023 01:18:49
+Excecuting Process: 20/05/2023 01:20:49
+Process Started
+Excecuting Process: 20/05/2023 01:21:40
+Process Started
+Excecuting Process: 20/05/2023 01:23:48
+Process Started
+Excecuting Process: 20/05/2023 01:26:19
+Process Started
+Excecuting Process: 20/05/2023 01:26:29
+Process Started
+Excecuting Process: 20/05/2023 01:33:24
+Process Started
+Excecuting Process: 20/05/2023 01:34:35
+Process Started
+Excecuting Process: 20/05/2023 01:45:45
+Excecuting Process: 20/05/2023 01:47:45
+Process Started
+Excecuting Process: 20/05/2023 01:52:26
+Excecuting Process: 20/05/2023 01:54:26
+Process Started
+Excecuting Process: 20/05/2023 01:55:11
+Process Started
+Excecuting Process: 20/05/2023 02:04:47
+Excecuting Process: 20/05/2023 02:06:47
+Process Started
+Excecuting Process: 20/05/2023 02:08:42
+Process Started
+Excecuting Process: 20/05/2023 02:17:26
+Process Started
+Excecuting Process: 20/05/2023 02:27:02
+Excecuting Process: 20/05/2023 02:29:02
+Process Started
+Excecuting Process: 20/05/2023 02:34:44
+Excecuting Process: 20/05/2023 02:36:44
+Process Started
+Excecuting Process: 20/05/2023 06:34:55
+Excecuting Process: 20/05/2023 06:36:55
+Excecuting Process: 20/05/2023 06:38:55
+Excecuting Process: 20/05/2023 06:40:55
+Excecuting Process: 20/05/2023 06:42:55
+Excecuting Process: 20/05/2023 06:44:55
+Excecuting Process: 20/05/2023 06:46:55
+Excecuting Process: 20/05/2023 06:48:55
+Process Started
+Excecuting Process: 20/05/2023 09:00:40
+Excecuting Process: 20/05/2023 09:02:40
+Excecuting Process: 20/05/2023 09:04:40
+Process Started
+Excecuting Process: 20/05/2023 09:09:03
+Excecuting Process: 20/05/2023 09:11:03
+Excecuting Process: 20/05/2023 09:13:04
+Excecuting Process: 20/05/2023 09:15:04
+Excecuting Process: 20/05/2023 09:17:03
+Excecuting Process: 20/05/2023 09:19:03
+Excecuting Process: 20/05/2023 09:21:03
+Excecuting Process: 20/05/2023 09:23:03
+Excecuting Process: 20/05/2023 09:25:03
+Excecuting Process: 20/05/2023 09:27:03
+Excecuting Process: 20/05/2023 09:29:03
+Excecuting Process: 20/05/2023 09:31:03
+Excecuting Process: 20/05/2023 09:33:03
+Excecuting Process: 20/05/2023 09:35:03
+Excecuting Process: 20/05/2023 09:37:03
+Excecuting Process: 20/05/2023 09:39:03
+Excecuting Process: 20/05/2023 09:41:03
+Excecuting Process: 20/05/2023 09:43:03
+Excecuting Process: 20/05/2023 09:45:03
+Excecuting Process: 20/05/2023 09:47:03
+Excecuting Process: 20/05/2023 09:49:03
+Excecuting Process: 20/05/2023 09:51:03
+Excecuting Process: 20/05/2023 09:53:03
+Excecuting Process: 20/05/2023 09:55:03
+Excecuting Process: 20/05/2023 09:57:03
+Excecuting Process: 20/05/2023 09:59:03
+Excecuting Process: 20/05/2023 10:01:03
+Excecuting Process: 20/05/2023 10:03:03
+Process Started
+Excecuting Process: 21/05/2023 11:22:25
+Excecuting Process: 21/05/2023 11:24:25
+Excecuting Process: 21/05/2023 11:26:25
+Excecuting Process: 21/05/2023 11:28:25
+Process Started
+Excecuting Process: 21/05/2023 11:33:41
+Excecuting Process: 21/05/2023 11:35:42
+Excecuting Process: 21/05/2023 11:37:41
+Excecuting Process: 21/05/2023 11:39:41
+Process Started
+Excecuting Process: 21/05/2023 11:42:01
+Excecuting Process: 21/05/2023 11:44:01
+Excecuting Process: 21/05/2023 11:46:01
+Excecuting Process: 21/05/2023 11:48:01
+Excecuting Process: 21/05/2023 11:50:01
+Excecuting Process: 21/05/2023 11:52:01
+Process Started
+Excecuting Process: 21/05/2023 11:54:59
+Excecuting Process: 21/05/2023 11:56:59
+Excecuting Process: 21/05/2023 11:58:59
+Excecuting Process: 21/05/2023 12:00:59
+Excecuting Process: 21/05/2023 12:02:59
+Excecuting Process: 21/05/2023 12:04:59
+Excecuting Process: 21/05/2023 12:06:59
+Excecuting Process: 21/05/2023 12:08:59
+Excecuting Process: 21/05/2023 12:10:59
+Excecuting Process: 21/05/2023 12:12:59
+Excecuting Process: 21/05/2023 12:14:59
+Excecuting Process: 21/05/2023 12:16:59
+Excecuting Process: 21/05/2023 12:18:59
+Excecuting Process: 21/05/2023 12:20:59
+Excecuting Process: 21/05/2023 12:22:59
+Process Started
+Excecuting Process: 21/05/2023 12:30:04
+Process Started
+Excecuting Process: 21/05/2023 12:31:53
+Excecuting Process: 21/05/2023 12:33:53
+Excecuting Process: 21/05/2023 12:35:53
+Excecuting Process: 21/05/2023 12:37:53
+Excecuting Process: 21/05/2023 12:39:53
+Excecuting Process: 21/05/2023 12:41:53
+Excecuting Process: 21/05/2023 12:43:53
+Excecuting Process: 21/05/2023 12:45:53
+Excecuting Process: 21/05/2023 12:47:53
+Excecuting Process: 21/05/2023 12:49:53
+Excecuting Process: 21/05/2023 12:51:53
+Excecuting Process: 21/05/2023 12:53:54
+Excecuting Process: 21/05/2023 12:55:54
+Excecuting Process: 21/05/2023 12:57:54
+Excecuting Process: 21/05/2023 12:59:54
+Process Started
+Excecuting Process: 21/05/2023 01:05:24
+Excecuting Process: 21/05/2023 01:07:24
+Process Started
+Excecuting Process: 21/05/2023 01:18:15
+Excecuting Process: 21/05/2023 01:20:15
+Excecuting Process: 21/05/2023 01:22:15
+Excecuting Process: 21/05/2023 01:24:15
+Process Started
+Excecuting Process: 21/05/2023 01:26:18
+Excecuting Process: 21/05/2023 01:28:18
+Excecuting Process: 21/05/2023 01:30:18
+Excecuting Process: 21/05/2023 01:32:18
+Excecuting Process: 21/05/2023 01:34:18
+Process Started
+Excecuting Process: 21/05/2023 01:36:57
+Process Started
+Excecuting Process: 21/05/2023 02:02:11
+Excecuting Process: 21/05/2023 02:04:11
+Excecuting Process: 21/05/2023 02:06:11
+Excecuting Process: 21/05/2023 02:08:11
+Excecuting Process: 21/05/2023 02:10:11
+Excecuting Process: 21/05/2023 02:12:11
+Excecuting Process: 21/05/2023 02:14:11
+Excecuting Process: 21/05/2023 02:16:11
+Excecuting Process: 21/05/2023 02:18:11
+Excecuting Process: 21/05/2023 02:20:11
+Excecuting Process: 21/05/2023 02:22:11
+Process Started
+Excecuting Process: 21/05/2023 02:24:22
+Excecuting Process: 21/05/2023 02:26:22
+Process Started
+Excecuting Process: 21/05/2023 02:27:35
+Process Started
+Excecuting Process: 21/05/2023 02:31:40
+Process Started
+Excecuting Process: 21/05/2023 02:35:14
+Excecuting Process: 21/05/2023 02:37:14
+Excecuting Process: 21/05/2023 02:39:14
+Excecuting Process: 21/05/2023 02:41:14
+Excecuting Process: 21/05/2023 02:43:14
+Excecuting Process: 21/05/2023 02:45:14
+Excecuting Process: 21/05/2023 02:47:14
+Excecuting Process: 21/05/2023 02:49:14
+Excecuting Process: 21/05/2023 02:51:14
+Process Started
+Excecuting Process: 21/05/2023 02:53:51
+Excecuting Process: 21/05/2023 02:55:50
+Excecuting Process: 21/05/2023 02:57:50
+Excecuting Process: 21/05/2023 02:59:50
+Excecuting Process: 21/05/2023 03:01:50
+Process Started
+Excecuting Process: 21/05/2023 03:33:48
+Excecuting Process: 21/05/2023 03:35:48
+Excecuting Process: 21/05/2023 03:37:47
+Process Started
+Excecuting Process: 21/05/2023 03:46:52
+Process Started
+Excecuting Process: 21/05/2023 03:47:53
+Excecuting Process: 21/05/2023 03:49:53
+Excecuting Process: 21/05/2023 03:51:53
+Excecuting Process: 21/05/2023 03:53:53
+Process Started
+Excecuting Process: 21/05/2023 03:56:51
+Excecuting Process: 21/05/2023 03:58:51
+Process Started
+Excecuting Process: 21/05/2023 04:23:04
+Process Started
+Excecuting Process: 21/05/2023 04:23:28
+Excecuting Process: 21/05/2023 04:25:28
+Process Started
+Excecuting Process: 21/05/2023 04:26:33
+Process Started
+Excecuting Process: 21/05/2023 04:29:35
+Excecuting Process: 21/05/2023 04:31:35
+Excecuting Process: 21/05/2023 04:33:35
+Process Started
+Excecuting Process: 21/05/2023 04:36:17
+Process Started
+Excecuting Process: 21/05/2023 04:38:46
+Excecuting Process: 21/05/2023 04:40:46
+Process Started
+Excecuting Process: 21/05/2023 04:42:01
+Process Started
+Excecuting Process: 21/05/2023 04:45:21
+Process Started
+Excecuting Process: 21/05/2023 04:48:15
+Process Started
+Excecuting Process: 21/05/2023 04:50:28
+Process Started
+Excecuting Process: 21/05/2023 04:55:52
+Process Started
+Excecuting Process: 21/05/2023 05:02:33
+Process Started
+Excecuting Process: 21/05/2023 05:06:05
+Process Started
+Excecuting Process: 21/05/2023 05:16:22
+Excecuting Process: 21/05/2023 05:18:22
+Process Started
+Excecuting Process: 21/05/2023 05:30:14
+Excecuting Process: 21/05/2023 05:32:14
+Process Started
+Excecuting Process: 21/05/2023 05:34:35
+Excecuting Process: 21/05/2023 05:36:35
+Process Started
+Excecuting Process: 21/05/2023 05:38:55
+Excecuting Process: 21/05/2023 05:40:55
+Process Started
+Excecuting Process: 21/05/2023 06:05:44
+Excecuting Process: 21/05/2023 06:07:44
+Excecuting Process: 21/05/2023 06:09:44
+Process Started
+Excecuting Process: 21/05/2023 06:13:06
+Excecuting Process: 21/05/2023 06:15:06
+Excecuting Process: 21/05/2023 06:17:05
+Excecuting Process: 21/05/2023 06:19:06
+Process Started
+Excecuting Process: 21/05/2023 06:34:35
+Process Started
+Excecuting Process: 21/05/2023 06:35:27
+Process Started
+Excecuting Process: 21/05/2023 06:42:33
+Excecuting Process: 21/05/2023 06:44:33
+Excecuting Process: 21/05/2023 06:46:33
+Process Started
+Excecuting Process: 21/05/2023 06:49:31
+Excecuting Process: 21/05/2023 06:51:31
+Excecuting Process: 21/05/2023 06:53:30
+Excecuting Process: 21/05/2023 06:55:31
+Excecuting Process: 21/05/2023 06:57:30
+Excecuting Process: 21/05/2023 06:59:31
+Excecuting Process: 21/05/2023 07:01:31
+Excecuting Process: 21/05/2023 07:03:31
+Process Started
+Excecuting Process: 21/05/2023 09:03:02
+Process Started
+Excecuting Process: 21/05/2023 09:04:54
+Excecuting Process: 21/05/2023 09:06:54
+Process Started
+Excecuting Process: 21/05/2023 09:07:47
+Process Started
+Excecuting Process: 21/05/2023 09:12:34
+Excecuting Process: 21/05/2023 09:14:34
+Process Started
+Excecuting Process: 21/05/2023 09:22:00
+Process Started
+Excecuting Process: 21/05/2023 09:25:06
+Process Started
+Excecuting Process: 21/05/2023 09:27:40
+Excecuting Process: 21/05/2023 09:29:40
+Excecuting Process: 21/05/2023 09:31:40
+Process Started
+Excecuting Process: 21/05/2023 09:33:00
+Process Started
+Excecuting Process: 21/05/2023 09:34:40
+Excecuting Process: 21/05/2023 09:36:40
+Process Started
+Excecuting Process: 21/05/2023 09:40:11
+Process Started
+Excecuting Process: 21/05/2023 09:42:26
+Process Started
+Excecuting Process: 21/05/2023 09:48:43
+Excecuting Process: 21/05/2023 09:50:43
+Excecuting Process: 21/05/2023 09:52:44
+Excecuting Process: 21/05/2023 09:54:43
+Process Started
+Excecuting Process: 21/05/2023 09:56:28
+Process Started
+Excecuting Process: 21/05/2023 09:58:19
+Excecuting Process: 21/05/2023 10:00:19
+Process Started
+Excecuting Process: 21/05/2023 10:01:54
+Process Started
+Excecuting Process: 21/05/2023 10:06:13
+Excecuting Process: 21/05/2023 10:08:13
+Process Started
+Excecuting Process: 21/05/2023 10:09:41
+Excecuting Process: 21/05/2023 10:11:41
+Process Started
+Excecuting Process: 21/05/2023 10:12:55
+Process Started
+Excecuting Process: 21/05/2023 10:16:25
+Process Started
+Excecuting Process: 21/05/2023 10:23:43
+Excecuting Process: 21/05/2023 10:25:43
+Process Started
+Excecuting Process: 21/05/2023 10:33:50
+Excecuting Process: 21/05/2023 10:35:50
+Process Started
+Excecuting Process: 21/05/2023 10:37:23
+Process Started
+Excecuting Process: 21/05/2023 10:39:15
+Excecuting Process: 21/05/2023 10:41:15
+Process Started
+Excecuting Process: 21/05/2023 10:42:33
+Process Started
+Excecuting Process: 21/05/2023 10:45:55
+Excecuting Process: 21/05/2023 10:47:55
+Process Started
+Excecuting Process: 21/05/2023 10:49:32
+Process Started
+Excecuting Process: 21/05/2023 10:50:01
+Excecuting Process: 21/05/2023 10:52:01
+Process Started
+Excecuting Process: 21/05/2023 10:54:57
+Excecuting Process: 21/05/2023 10:56:57
+Excecuting Process: 21/05/2023 10:58:57
+Process Started
+Excecuting Process: 21/05/2023 11:01:49
+Excecuting Process: 21/05/2023 11:03:49
+Process Started
+Excecuting Process: 21/05/2023 11:06:23
+Excecuting Process: 21/05/2023 11:08:23
+Excecuting Process: 21/05/2023 11:10:23
+Excecuting Process: 21/05/2023 11:12:23
+Excecuting Process: 21/05/2023 11:14:23
+Process Started
+Excecuting Process: 21/05/2023 11:37:18
+Excecuting Process: 21/05/2023 11:39:18
+Excecuting Process: 21/05/2023 11:41:18
+Process Started
+Excecuting Process: 22/05/2023 10:22:50
+Process Started
+Excecuting Process: 22/05/2023 10:29:01
+Process Started
+Excecuting Process: 22/05/2023 10:33:58
+Excecuting Process: 22/05/2023 10:35:58
+Excecuting Process: 22/05/2023 10:37:58
+Excecuting Process: 22/05/2023 10:39:58
+Excecuting Process: 22/05/2023 10:41:58
+Excecuting Process: 22/05/2023 10:43:58
+Excecuting Process: 22/05/2023 10:45:58
+Excecuting Process: 22/05/2023 10:47:58
+Excecuting Process: 22/05/2023 10:49:58
+Process Started
+Excecuting Process: 22/05/2023 11:15:53
+Excecuting Process: 22/05/2023 11:17:53
+Excecuting Process: 22/05/2023 11:19:53
+Excecuting Process: 22/05/2023 11:21:53
+Excecuting Process: 22/05/2023 11:23:53
+Excecuting Process: 22/05/2023 11:25:53
+Excecuting Process: 22/05/2023 11:27:53
+Excecuting Process: 22/05/2023 11:29:53
+Excecuting Process: 22/05/2023 11:31:53
+Excecuting Process: 22/05/2023 11:33:53
+Excecuting Process: 22/05/2023 11:35:53
+Excecuting Process: 22/05/2023 11:37:53
+Process Started
+Excecuting Process: 22/05/2023 11:39:59
+Process Started
+Excecuting Process: 22/05/2023 11:46:27
+Excecuting Process: 22/05/2023 11:48:27
+Excecuting Process: 22/05/2023 11:50:27
+Process Ended
+>>>>>>> 0d6694f5375d3bf5817e5cf049742e90a60fc2c7
