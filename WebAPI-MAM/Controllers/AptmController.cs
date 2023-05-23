@@ -88,22 +88,33 @@ namespace WebAPI_MAM.Controllers
 
 
         [AllowAnonymous]
-        [HttpGet("{PatientId:int}")]
+        [HttpGet("AptmReminder {PatientId:int}")]
         public async Task<ActionResult<List<GetAptmDTO>>> GetByIdPatientReminder(int PatientId)
         {
 
-            var PatientExists = await dbContext.Appointments.AnyAsync(x => x.Id == PatientId);
+            var PatientExists = await dbContext.Patients.AnyAsync(x => x.Id == PatientId);
             if (!PatientExists)
             {
                 return BadRequest("No existe paciente");
             }
 
-            var diaDespues = DateTime.Now.AddDays(1);
-            var hoy = DateTime.Now;
+            else if (PatientExists)
+            {
+                var diaDespues = DateTime.Now.AddDays(1);
+                var hoy = DateTime.Now;
 
-            var aptmFamilies = await dbContext.Appointments.Where(x => x.patientId == PatientId && x.Date < diaDespues && x.Date > hoy).ToListAsync();
+                var aptmLista = await dbContext.Appointments.Where(x => x.patientId == PatientId && x.Date < diaDespues && x.Date > hoy)
+               .Include(x => x.patient).ToListAsync();
 
-            return mapper.Map<List<GetAptmDTO>>(aptmFamilies);
+
+
+                return mapper.Map<List<GetAptmDTO>>(aptmLista);
+            }
+
+            else
+            {
+                return Ok("No hay citas para el próximo día");
+            }
 
         }
 
