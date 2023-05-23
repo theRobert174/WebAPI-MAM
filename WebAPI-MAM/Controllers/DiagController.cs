@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI_MAM.DTO_s.Set;
 using WebAPI_MAM.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebAPI_MAM.Controllers
 {
     [ApiController]
     [Route("MAM/Diagnosis")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
     public class DiagController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -20,7 +22,7 @@ namespace WebAPI_MAM.Controllers
 
         }
 
-        [HttpGet] //Lista de los doctores
+        [HttpGet] //Lista de los diagnosticos y sus citas
         public async Task<ActionResult<List<Diagnosis>>> Get()
         {
             return await dbContext.Diagnosis.ToListAsync();
@@ -29,9 +31,9 @@ namespace WebAPI_MAM.Controllers
         
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] DiagnosisDTO diagnosisDTO, [FromHeader] int idCita)
+        public async Task<ActionResult> Post([FromBody] DiagnosisDTO diagnosisDTO)
         {
-            var APTExists = await dbContext.Appointments.AnyAsync(x => x.Id == idCita);
+            var APTExists = await dbContext.Appointments.AnyAsync(x => x.Id == diagnosisDTO.appointmentId);
             if (!APTExists)
             {
                 return BadRequest("No existe cita en la base de datos con ese Id");
@@ -41,7 +43,7 @@ namespace WebAPI_MAM.Controllers
             dbContext.Add(diagnosisDB);
             await dbContext.SaveChangesAsync();
 
-            var Apointment = await dbContext.Appointments.FirstOrDefaultAsync(x => x.Id == idCita);
+            var Apointment = await dbContext.Appointments.FirstOrDefaultAsync(x => x.Id == diagnosisDTO.appointmentId);
 
             Apointment.diagId = diagnosisDB.Id;
             dbContext.Update(Apointment);

@@ -17,7 +17,7 @@ namespace WebAPI_MAM.Controllers
 {
     [ApiController]
     [Route("MAM/Doctores")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
 
     public class DocController : ControllerBase
     {
@@ -31,7 +31,7 @@ namespace WebAPI_MAM.Controllers
             this.mapper = mapper;
             this.logger = logger;
         }
-
+        
         //Get-----------------
         [HttpGet("GetAllDoctors")] //Lista de los doctores
         public async Task<ActionResult<List<Doctors>>> GetAll()
@@ -50,6 +50,20 @@ namespace WebAPI_MAM.Controllers
                 Include(x => x.doctor).ToListAsync();
 
             return mapper.Map<List<DoctorsDTOconCitas>>(Doctor);
+        }
+
+
+        [HttpGet("GetAllAptmMedicDiag")]
+        public async Task<ActionResult<List<Appointments>>> GetbyDoctor(int id)
+        {
+
+            var doctors = await dbContext.Appointments.Where(x => x.doctorId == id)
+                .Include(x => x.doctor)
+                .Include(x => x.patient)
+                    .ThenInclude(x => x.medicInfo)
+                .Include(x => x.diagnostic)
+                .ToListAsync();
+            return mapper.Map<List<Appointments>>(doctors);
         }
 
         [HttpGet("AppointmentsbyDate/{date:DateTime}")]

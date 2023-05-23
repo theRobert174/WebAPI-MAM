@@ -12,8 +12,8 @@ using WebAPI_MAM;
 namespace WebAPI_MAM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230521174119_Initial")]
-    partial class Initial
+    [Migration("20230523032113_AddRoleDoctor")]
+    partial class AddRoleDoctor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -310,6 +310,9 @@ namespace WebAPI_MAM.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("password")

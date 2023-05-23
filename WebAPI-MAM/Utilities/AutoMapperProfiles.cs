@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using System.Numerics;
 using WebAPI_MAM.DTO_s.Get;
 using WebAPI_MAM.DTO_s.Set;
 using WebAPI_MAM.DTO_s.Update;
 using WebAPI_MAM.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebAPI_MAM.Utilities
 {
@@ -18,7 +20,7 @@ namespace WebAPI_MAM.Utilities
             CreateMap<Doctors, DoctorDTO>();
             CreateMap<AptmDTO, Appointments>();
             CreateMap<DiagnosisDTO, Diagnosis>();
-           
+
 
             //Update
             CreateMap<UpPatientDTO, Patients>();
@@ -30,13 +32,16 @@ namespace WebAPI_MAM.Utilities
 
             //DTO Get
 
-           // CreateMap<List<Appointments>, List<GetAptmDTO>>();
+            // CreateMap<List<Appointments>, List<GetAptmDTO>>();
             CreateMap<Patients, GetPatientDTO>()
                 .ForMember(dest => dest.MedicInfo, opt => opt.MapFrom(src => src.medicInfo))
                 .ForMember(dest => dest.appointments, opt => opt.MapFrom(src => src.appointments));
             CreateMap<MedicInfo, GetMedicInfoDTO>();
             CreateMap<Appointments, GetAptmDTO>()
                 .ForMember(dest => dest.diagnostic, opt => opt.MapFrom(src => src.diagnostic));
+
+            CreateMap<Appointments, DoctorsDTOconCitas>()
+               .ForMember(dest => dest.appointments, opt => opt.MapFrom(src => src.doctor));
 
             CreateMap<Doctors, DoctorsDTOconCitas>()
                 .ForMember(dest => dest.appointments, opt => opt.MapFrom(MapDoctorDTOAptms));
@@ -51,12 +56,27 @@ namespace WebAPI_MAM.Utilities
             CreateMap<Doctors, GetDoctorDTO>();
             CreateMap<Doctors, DoctorsDTOconCitas>().ForMember(dDTO => dDTO.appointments, opt => opt.MapFrom(MapDoctorDTOAptms));
 
-           CreateMap<Appointments, AptmDTOwithDiag>().ForMember(aDTO => aDTO.diagnostic, opt => opt.MapFrom(MapAptmDTOwDiag));
+            CreateMap<Appointments, AptmDTOwithDiag>().ForMember(aDTO => aDTO.diagnostic, opt => opt.MapFrom(MapAptmDTOwDiag));
+
+
+            //CreateMap<Doctors, AptmWithAll>().ReverseMap();
+
+           /* CreateMap<Appointments, Doctors>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.doctor))
+            // Mapea otras propiedades del doctor si es necesario
+            .ReverseMap();*/
+
+
+      
+
+
+
 
         }
 
-        #region PatientMapping
-        private GetMedicInfoDTO MapPatientDTOMedicInfo(Patients patient, GetPatientDTO getPatientDTO)
+    #region PatientMapping
+    private GetMedicInfoDTO MapPatientDTOMedicInfo(Patients patient, GetPatientDTO getPatientDTO)
         {
             if (patient.medicInfo == null) { return null; }
 

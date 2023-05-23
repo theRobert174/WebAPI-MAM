@@ -13,6 +13,8 @@ using WebAPI_MAM.DTO_s.Set;
 using WebAPI_MAM.DTO_s.Update;
 using WebAPI_MAM;
 using WebAPI_MAM.Entities;
+using WebAPI_MAM.Validators;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApiAlumnosSeg.Controllers
 {
@@ -44,8 +46,29 @@ namespace WebApiAlumnosSeg.Controllers
 
             if (result.Succeeded)
             {
+                Doctors doctorDTO = new Doctors();
+
+                doctorDTO.Name = credencialsUser.Name;
+                doctorDTO.Mail = credencialsUser.Email;
+                doctorDTO.password = credencialsUser.Password;
+                doctorDTO.Role = credencialsUser.Role;
+
+                var doctor = mapper.Map<Doctors>(doctorDTO);
+                dbContext.Add(doctor);
+                await dbContext.SaveChangesAsync();
+
+                DoctorPass doctorPass = new DoctorPass();
+                doctorPass.Email = credencialsUser.Email;
+                doctorPass.Password = credencialsUser.Password;
+
+                if(doctorDTO.Role == "doctor")
+                {
+                    var userDoctor = await userManager.FindByEmailAsync(doctorDTO.Mail);
+                    await userManager.AddClaimAsync(userDoctor, new Claim("IsDoctor", "1"));
+                }
+
                 //Se retorna el Jwt (Json Web Token) especifica el formato del token que hay que devolverle a los clientes
-                return await ConstruirToken(credencialsUser);
+                return await ConstruirToken(doctorPass);
             }
             else
             {
@@ -53,15 +76,23 @@ namespace WebApiAlumnosSeg.Controllers
             }
         }
 
+        //-----------------------------------
         [HttpPost("login")]
-        public async Task<ActionResult<ResponseAutentication>> Login(CredencialsUser credencialsUser)
+        public async Task<ActionResult<ResponseAutentication>> Login(DoctorPass doctorPass)
         {
-            var result = await signInManager.PasswordSignInAsync(credencialsUser.Email,
-                credencialsUser.Password, isPersistent: false, lockoutOnFailure: false);
+
+            var doctor = await userManager.FindByNameAsync(doctorPass.Email);
+            if (doctor == null)
+            {
+                return NotFound("Esta cuenta no existe");
+            }
+            var doctorEmail = doctor.Email;
+            var result = await signInManager.PasswordSignInAsync(doctorEmail,
+                doctorPass.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (result.Succeeded)
             {
-                return await ConstruirToken(credencialsUser);
+                return await ConstruirToken(doctorPass);
             }
             else
             {
@@ -72,21 +103,22 @@ namespace WebApiAlumnosSeg.Controllers
 
         [HttpGet("RenovarToken")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ResponseAutentication>> Renovar()
+        public async Task<ActionResult<ResponseAutentication>> Renovar(UpAdminDTO upAdminDTO)
         {
-            var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
-            var email = emailClaim.Value;
+            //var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
+            var emailClaim = await userManager.FindByNameAsync(upAdminDTO.Email);
+            var email = emailClaim.Email;
 
-            var credenciales = new CredencialsUser()
+            var doctorPass = new DoctorPass()
             {
                 Email = email
             };
 
-            return await ConstruirToken(credenciales);
+            return await ConstruirToken(doctorPass);
 
         }
 
-        private async Task<ResponseAutentication> ConstruirToken(CredencialsUser credencialsUser)
+        private async Task<ResponseAutentication> ConstruirToken(DoctorPass doctorPass)
         {
             //Informacion del usuario en la cual podemos confiar
             //En los claim se pueden declarar cualquier variable, sin embargo, no debemos de declarar informacion
@@ -94,11 +126,11 @@ namespace WebApiAlumnosSeg.Controllers
 
             var claims = new List<Claim>
             {
-                new Claim("email", credencialsUser.Email),
-                new Claim("claimprueba", "Este es un claim de prueba")
+                new Claim("email", doctorPass.Email),
+               // new Claim("claimprueba", "Este es un claim de prueba")
             };
 
-            var usuario = await userManager.FindByEmailAsync(credencialsUser.Email);
+            var usuario = await userManager.FindByEmailAsync(doctorPass.Email);
             var claimsDB = await userManager.GetClaimsAsync(usuario);
 
             claims.AddRange(claimsDB);
@@ -119,8 +151,21 @@ namespace WebApiAlumnosSeg.Controllers
         }
 
         [HttpPost("HacerDoctor")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> HacerAdmin(UpAdminDTO upAdminDTO)
         {
+
+            var exist = await dbContext.Doctors.AnyAsync(x => x.Mail == upAdminDTO.Email);
+            if(!exist)
+            {
+                return NotFound("Este usuario no existe");
+            }
+
+            var aplicationDoctor = await dbContext.Doctors.FirstOrDefaultAsync(x => x.Mail == upAdminDTO.Email);
+            aplicationDoctor.Role = "doctor";
+            dbContext.Update(aplicationDoctor);
+            await dbContext.SaveChangesAsync();
+
             var usuario = await userManager.FindByEmailAsync(upAdminDTO.Email);
 
             await userManager.AddClaimAsync(usuario, new Claim("IsDoctor", "1"));
@@ -129,13 +174,28 @@ namespace WebApiAlumnosSeg.Controllers
         }
 
         [HttpPost("RemoverDoctor")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> RemoverAdmin(UpAdminDTO upAdminDTO)
         {
+
+            var exist = await dbContext.Doctors.AnyAsync(x => x.Mail == upAdminDTO.Email);
+            if (!exist)
+            {
+                return NotFound("Este usuario no existe");
+            }
+
+            var aplicationDoctor = await dbContext.Doctors.FirstOrDefaultAsync(x => x.Mail == upAdminDTO.Email);
+            aplicationDoctor.Role = "paciente";
+            dbContext.Update(aplicationDoctor);
+            await dbContext.SaveChangesAsync();
+
             var usuario = await userManager.FindByEmailAsync(upAdminDTO.Email);
 
             await userManager.RemoveClaimAsync(usuario, new Claim("IsDoctor", "1"));
 
             return NoContent();
+
+
         }
     }
 }

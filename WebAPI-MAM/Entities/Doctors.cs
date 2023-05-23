@@ -20,6 +20,9 @@ namespace WebAPI_MAM.Entities
         //[PasswordValidation]
         public string password { get; set; }
 
+        //Role 
+        public string Role { get; set; }
+
         public List<Appointments> appointments { get; set; }
 
     }

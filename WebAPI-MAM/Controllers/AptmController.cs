@@ -71,13 +71,14 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpGet("DoctorIdPatientNameDate")] //BUSCAR POR NOMBRE ID MEDICO Y FECHA
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult<GetAptmDTO>> GetporID(int idMedico, string nombrePaciente, DateTime fecha)
         {
             //PARA VALIDAR COSAS CON DOCUTORIES USA AUTHORIZA IS DOCTOR O CHECA SI TIENE EL CLAIM DOCTOR
-            var DoctorClaim = HttpContext.User.Claims.Where(claim => claim.Type == "IsDoctor").FirstOrDefault();
+           // var DoctorClaim = HttpContext.User.Claims.Where(claim => claim.Type == "IsDoctor").FirstOrDefault();
 
-            var email = DoctorClaim.Value;
-            var usuario = await userManager.FindByEmailAsync(email);
+            //var email = DoctorClaim.Value;
+            //var usuario = await userManager.FindByEmailAsync(email);
 
             var aptm = await dbContext.Appointments.Where(x=> x.doctorId==idMedico && x.patient.name==nombrePaciente && x.Date==fecha)
                 .Include(x => x.doctor).Include(x => x.patient).FirstOrDefaultAsync();
@@ -107,7 +108,7 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpPost("NewAppointment")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> Post([FromBody] AptmDTO aptmDTO)
         {
 
@@ -146,7 +147,7 @@ namespace WebAPI_MAM.Controllers
 
 
         [HttpPut("EditAptm")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> Put([FromBody] AptmDTO aptmDTO, [FromHeader] int id)
         {
 
@@ -168,7 +169,8 @@ namespace WebAPI_MAM.Controllers
             {
                 return BadRequest("No existen Pacientes en la base de datos con ese Id");
             }
-            var CitaOcupada = await dbContext.Appointments.AnyAsync(x => x.Date == aptmDTO.Date);
+            var CitaOcupada = await dbContext.Appointments.AnyAsync(x => x.Date == aptmDTO.Date
+                || x.Date.AddHours(1) < aptmDTO.Date);
             if (CitaOcupada)
             {
                 return BadRequest("Cita ocupada");
@@ -190,7 +192,7 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpDelete]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
 
         public async Task<ActionResult> Delete([FromHeader] int id)
         {
