@@ -28,6 +28,7 @@ namespace WebAPI_MAM.Entities
         [Required]
         [ForeignKey("patient")]
         public int patientId { get; set; }
+        [JsonIgnore]
         public Patients patient { get; set; }
 
         public int diagId { get; set; }

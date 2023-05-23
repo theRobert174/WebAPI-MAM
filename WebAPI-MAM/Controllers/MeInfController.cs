@@ -32,7 +32,7 @@ namespace WebAPI_MAM.Controllers
         [HttpGet("ByNss")]
         public async Task<ActionResult<List<MedicInfo>>> GetByNss([FromHeader] string nss)
         {
-            return await dbContext.MedicInfo.Where(x=>x.nss==nss).Include(p => p.patient).ToListAsync();
+            return await dbContext.MedicInfo.Where(x=>x.nss==nss).Include(p => p.patient).ThenInclude(p => p.appointments).ToListAsync();
 
         }
 
