@@ -5,6 +5,7 @@ using WebAPI_MAM.DTO_s.Set;
 using WebAPI_MAM.DTO_s.Update;
 using WebAPI_MAM.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace WebAPI_MAM.Utilities
 {
@@ -33,12 +34,19 @@ namespace WebAPI_MAM.Utilities
             //DTO Get
 
             // CreateMap<List<Appointments>, List<GetAptmDTO>>();
+            CreateMap<Diagnosis, GetDiagDTO>();
             CreateMap<Patients, GetPatientDTO>()
                 .ForMember(dest => dest.MedicInfo, opt => opt.MapFrom(src => src.medicInfo))
                 .ForMember(dest => dest.appointments, opt => opt.MapFrom(src => src.appointments));
-            CreateMap<MedicInfo, GetMedicInfoDTO>();
+
             CreateMap<Appointments, GetAptmDTO>()
-                .ForMember(dest => dest.diagnostic, opt => opt.MapFrom(src => src.diagnostic));
+                .ForMember(dest => dest.diagnosis, opt => opt.MapFrom(src => src.diagnostic)).
+                ForMember(dest => dest.doctorName, opt => opt.MapFrom(src => src.doctor))
+                .ForMember(dest => dest.patientName, opt => opt.MapFrom(src => src.patient))
+                ;
+            CreateMap<MedicInfo, GetMedicInfoDTO>();
+            CreateMap<Appointments, GetAptmDTO>().ReverseMap();
+            //    .ForMember(dest => dest.diagnosis, opt => opt.MapFrom(src => src.diagnostic));
 
             CreateMap<Appointments, DoctorsDTOconCitas>()
                .ForMember(dest => dest.appointments, opt => opt.MapFrom(src => src.doctor));
@@ -56,7 +64,7 @@ namespace WebAPI_MAM.Utilities
             CreateMap<Doctors, GetDoctorDTO>();
             //CreateMap<Doctors, DoctorsDTOconCitas>().ForMember(dDTO => dDTO.appointments, opt => opt.MapFrom(MapDoctorDTOAptms));
 
-            CreateMap<Appointments, AptmDTOwithDiag>().ForMember(aDTO => aDTO.diagnostic, opt => opt.MapFrom(MapAptmDTOwDiag));
+           // CreateMap<Appointments, AptmDTOwithDiag>().ReverseMap().ForMember(DTO => DTO.diagnostic, OPT => OPT.MapFrom(MapAptmDTOwDiag));
 
 
             //CreateMap<Doctors, AptmWithAll>().ReverseMap();
@@ -139,21 +147,27 @@ namespace WebAPI_MAM.Utilities
             return result;
         }
 
-        private GetDiagDTO MapAptmDTOwDiag(Appointments aptm, GetAptmDTO getAptmDTO)
+        /*private List<GetDiagDTO> MapAptmDTOwDiag(Appointments aptm, GetAptmDTO getAptmDTO)
         {
-            if(aptm.diagnostic == null) { return null; }
 
-            var result = new GetDiagDTO()
-            {
-                Id = aptm.diagnostic.Id,
-                observations = aptm.diagnostic.observations,
-                diagnostic = aptm.diagnostic.diagnostic,
-                treatment = aptm.diagnostic.treatment,
-                drugs = aptm.diagnostic.drugs
-            };
+            var result = new List<GetDiagDTO>();
+            if (aptm.diagnostic == null) { return null; }
+
+            foreach (var record in aptm.)
+            
+                     result.Add(new GetDiagDTO()
+                     {
+                          Id = aptm.diagnostic.Id,
+                         observations = aptm.diagnostic.observations,
+                         diagnostic = aptm.diagnostic.diagnostic,
+                          treatment = aptm.diagnostic.treatment,
+                         drugs = aptm.diagnostic.drugs
+                });
+            
+            
 
             return result;
-        }
+        }*/
 
     }
 }

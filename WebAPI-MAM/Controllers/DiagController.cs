@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebAPI_MAM.DTO_s.Set;
 using WebAPI_MAM.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using WebAPI_MAM.DTO_s.Get;
 
 namespace WebAPI_MAM.Controllers
 {
@@ -23,12 +24,23 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpGet] //Lista de los diagnosticos y sus citas
-        public async Task<ActionResult<List<Diagnosis>>> Get()
+        public async Task<ActionResult<List<GetDiagDTO>>> Get()
         {
-            return await dbContext.Diagnosis.ToListAsync();
+            var dia =  await dbContext.Diagnosis.ToListAsync();
+            return mapper.Map<List<GetDiagDTO>>(dia);
 
         }
-        
+
+
+        [HttpGet ("DiagbyId")] //Lista de los diagnosticos y sus citas
+        public async Task<ActionResult<List<GetDiagDTO>>> GetbyId(int id)
+        {
+            
+            var dia = await dbContext.Diagnosis.Where(x => x.Id == id).ToListAsync();
+            return mapper.Map<List<GetDiagDTO>>(dia);
+
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] DiagnosisDTO diagnosisDTO)

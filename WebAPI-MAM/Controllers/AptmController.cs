@@ -40,11 +40,15 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpGet("AptmWithDiag")] //Lista de todas las citas con diagnostico
-        public async Task<ActionResult<List<AptmDTOwithDiag>>> GetwithDiag()
+        public async Task<ActionResult<List<GetAptmDTO>>> GetwithDiag()
         {
-            var aptm = await dbContext.Appointments.Include(x => x.patient.name).Include(x => x.doctor.Name)
-                .Include(x => x.diagnostic).ToListAsync();
-            return mapper.Map<List<AptmDTOwithDiag>>(aptm);
+
+            var APTM = await dbContext.Appointments.Include(a => a.diagnostic).ToListAsync();
+            var aptmDTO = mapper.Map<List<GetAptmDTO>>(APTM);
+
+            return aptmDTO;
+            //var aptm = await dbContext.Appointments.Include(x => x.diagnostic).ToListAsync();
+            //return mapper.Map<List<GetAptmDTO>>(aptm);
 
         }
 
@@ -181,7 +185,7 @@ namespace WebAPI_MAM.Controllers
                 return BadRequest("No existen Pacientes en la base de datos con ese Id");
             }
             var CitaOcupada = await dbContext.Appointments.AnyAsync(x => x.Date == aptmDTO.Date
-                || x.Date.AddHours(1) < aptmDTO.Date);
+                || (x.Date.AddHours(1) > aptmDTO.Date && x.Date.AddHours(-1) < aptmDTO.Date));
             if (CitaOcupada)
             {
                 return BadRequest("Cita ocupada");

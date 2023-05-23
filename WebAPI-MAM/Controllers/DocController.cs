@@ -60,18 +60,36 @@ namespace WebAPI_MAM.Controllers
         }
 
 
-        [HttpGet("GetAllAptmMedicDiag")]
-        public async Task<ActionResult<List<Appointments>>> GetbyDoctor(int id)
+       /* [HttpGet("GetAllAptmMedicDiagbyAptm")]
+        public async Task<ActionResult<GetAptmDTO>> GetbyDoctor(int id)
         {
 
-            var doctors = await dbContext.Appointments.Where(x => x.doctorId == id)
-                .Include(x => x.doctor)
-                .Include(x => x.patient)
-                    .ThenInclude(x => x.medicInfo)
-                .Include(x => x.diagnostic)
-                .ToListAsync();
-            return mapper.Map<List<Appointments>>(doctors);
-        }
+
+            var pacienteDB = await dbContext.Appointments.Include(m => m.diagnostic).Include(p => p.doctor)
+                .Include(p => p.patient)
+               .ThenInclude(x => x.medicInfo).FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pacienteDB == null)
+            {
+                return NotFound();
+            }
+
+            var patientDTO = mapper.Map<GetAptmDTO>(pacienteDB);
+
+            return patientDTO;
+
+            ////var aptm = await dbContext.Appointments.Where(x =>x.doctorId == id)
+            ////    .Include(x => x.doctor).Include(x => x.patient).ThenInclude(x => x).ToListAsync();
+            ////return mapper.Map<List<AptmDTOwithDiag>>(aptm);
+            //var doctors = await dbContext.Appointments
+            //    .Include(x => x.patient)
+            //        .ThenInclude(x => x.medicInfo)
+            //    .Include(x => x.diagnostic)
+            //    .Where(x => x.doctorId == id).ToListAsync();
+
+
+            //return mapper.Map<List<Appointments>>(doctors);
+        }*/
 
         [HttpGet("AppointmentsbyDate/{date:DateTime}")]
         public async Task<ActionResult<List<DoctorsDTOconCitas>>> GetbyDate(DateTime dateTime)

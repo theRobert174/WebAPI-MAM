@@ -29,6 +29,13 @@ namespace WebAPI_MAM.Controllers
 
         }
 
+        [HttpGet ("ByIdPatient")] //Lista de datos medicos
+        public async Task<ActionResult<List<MedicInfo>>> Get(int id)
+        {
+            return await dbContext.MedicInfo.Include(p => p.patient).Where(m => m.patientId == id).ToListAsync();
+
+        }
+
         [HttpGet("ByNss")]
         public async Task<ActionResult<List<MedicInfo>>> GetByNss([FromHeader] string nss)
         {
@@ -66,16 +73,16 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpPut("EditMedicInfo")]
-        public async Task<ActionResult> Put([FromBody] MedicInfoDTO medicInfoDTO, [FromHeader] int id)
+        public async Task<ActionResult> Put([FromBody] MedicInfoDTO medicInfoDTO, int id)
         {
             var exist = await dbContext.MedicInfo.AnyAsync(p => p.Id == id);
             if (!exist)
             {
-                return NotFound($"Paciente con el id: {id} no existe");
+                return NotFound($"La información medica con el id: {id} no existe");
             }
 
             var medicInfoDb = mapper.Map<MedicInfo>(medicInfoDTO);
-            //medicInfoDb.Id = id;
+            medicInfoDb.Id = id;
             dbContext.Update(medicInfoDb);
 
             await dbContext.SaveChangesAsync();

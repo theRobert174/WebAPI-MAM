@@ -42,7 +42,8 @@ namespace WebAPI_MAM.Controllers
         [HttpGet("Get")]
         public async Task<ActionResult<GetPatientDTO>> GetById([FromQuery] int id)
         {
-            var pacienteDB = await dbContext.Patients.Include(m => m.medicInfo).Include(p => p.appointments).ThenInclude(ap => ap.diagnostic).FirstOrDefaultAsync(p => p.Id == id);
+            var pacienteDB = await dbContext.Patients.Include(m => m.medicInfo).Include(p => p.appointments)
+                .ThenInclude(ap => ap.diagnostic).FirstOrDefaultAsync(p => p.Id == id);
 
             if (pacienteDB == null)
             {
@@ -54,13 +55,13 @@ namespace WebAPI_MAM.Controllers
             return patientDTO;
         }
 
-        [HttpGet("GetPatientsAptm")]
-        public async Task<ActionResult<GetPatientDTO>> GetAll([FromHeader] int id)
+       /* [HttpGet("GetPatientsAptm")]
+        public async Task<ActionResult<GetAptmDTO>> GetAll([FromHeader] int id)
         {
             //Incluir las la relación que tiene el paciente con sus citas y luego incluir el diagnostico de esas citas
-            var patients = await dbContext.Patients.Where(Patients => Patients.Id == id).ToListAsync();
-            return mapper.Map<GetPatientDTO>(patients);
-        }
+            var aptmPatient = await dbContext.Appointments.Where(Patients => Patients.patientId == id).ToListAsync();
+            return mapper.Map<GetAptmDTO>(aptmPatient);
+        }*/
 
         //Post --------------------------------------------
         [HttpPost("PostPatient")]

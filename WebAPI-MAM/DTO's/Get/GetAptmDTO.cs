@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+using WebAPI_MAM.Entities;
 using WebAPI_MAM.Validators;
 
 namespace WebAPI_MAM.DTO_s.Get
@@ -20,7 +22,10 @@ namespace WebAPI_MAM.DTO_s.Get
         [Required]
        
         public int diagId { get; set; }
+        [JsonIgnore]
+        public Diagnosis diagnosis { get; set; }
         public string doctorName { get; set; }
-        public GetDiagDTO diagnostic { get; set; }
+        //[JsonIgnore]
+        //public GetDiagDTO diagnostic { get; set; }
     }
 }
