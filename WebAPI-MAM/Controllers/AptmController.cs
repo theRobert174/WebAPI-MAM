@@ -71,7 +71,7 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpGet("DoctorIdPatientNameDate")] //BUSCAR POR NOMBRE ID MEDICO Y FECHA
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult<GetAptmDTO>> GetporID(int idMedico, string nombrePaciente, DateTime fecha)
         {
             //PARA VALIDAR COSAS CON DOCUTORIES USA AUTHORIZA IS DOCTOR O CHECA SI TIENE EL CLAIM DOCTOR
@@ -108,7 +108,7 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpPost("NewAppointment")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> Post([FromBody] AptmDTO aptmDTO)
         {
 
@@ -147,7 +147,7 @@ namespace WebAPI_MAM.Controllers
 
 
         [HttpPut("EditAptm")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
         public async Task<ActionResult> Put([FromBody] AptmDTO aptmDTO, [FromHeader] int id)
         {
 
@@ -192,7 +192,7 @@ namespace WebAPI_MAM.Controllers
         }
 
         [HttpDelete]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
 
         public async Task<ActionResult> Delete([FromHeader] int id)
         {
