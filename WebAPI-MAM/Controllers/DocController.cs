@@ -91,13 +91,12 @@ namespace WebAPI_MAM.Controllers
             //return mapper.Map<List<Appointments>>(doctors);
         }*/
 
-        [HttpGet("AppointmentsbyDate/{date:DateTime}")]
-        public async Task<ActionResult<List<DoctorsDTOconCitas>>> GetbyDate(DateTime dateTime)
+        [HttpGet("AppointmentsbyDate")]
+        public async Task<ActionResult<List<GetAptmDTO>>> GetbyDate([FromQuery] DateTime dateTime)
         {
 
-            var aptm = await dbContext.Appointments.Where(x => x.Date.Date == dateTime.Date)
-                .ToListAsync();
-            return mapper.Map<List<DoctorsDTOconCitas>>(aptm);
+            var aptm = await dbContext.Appointments.Where(x => x.Date.Date == dateTime.Date).ToListAsync();
+            return mapper.Map<List<GetAptmDTO>>(aptm);
         }
 
         //Post------------

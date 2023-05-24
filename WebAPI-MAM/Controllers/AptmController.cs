@@ -90,6 +90,13 @@ namespace WebAPI_MAM.Controllers
 
         }
 
+        [HttpGet("GetPendingAptmByDoctor")]
+        public async Task<ActionResult<List<GetAptmDTO>>> GetByDoctorid([FromQuery] int docId)
+        {
+            var aptms = await dbContext.Appointments.Where(a => a.doctorId ==  docId && (a.Status.Contains("pendiente") || a.Status.Contains("Pendiente"))).ToListAsync();
+            return mapper.Map<List<GetAptmDTO>>(aptms);
+        }
+
 
         [AllowAnonymous]
         [HttpGet("AptmReminder {PatientId:int}")]
