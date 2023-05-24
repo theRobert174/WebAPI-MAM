@@ -1,34 +1,67 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebAPI_MAM.DTO_s.Set;
 using WebAPI_MAM.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using WebAPI_MAM.DTO_s.Get;
 
 namespace WebAPI_MAM.Controllers
 {
     [ApiController]
     [Route("MAM/Diagnosis")]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "IsDoctor")]
     public class DiagController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly IMapper mapper;
 
-        public DiagController(ApplicationDbContext context)
+        public DiagController(ApplicationDbContext context,  IMapper mapper)
         {
             this.dbContext = context;
-        }
-
-        [HttpGet] //Lista de los doctores
-        public async Task<ActionResult<List<Diagnosis>>> Get()
-        {
-            return await dbContext.Diagnosis.ToListAsync();
+            this.mapper = mapper;
 
         }
-        //No se puede agregar diagnosticos desde aqui, se tiene que modificando la cita
-        /*[HttpPost]
-        public async Task<ActionResult<Diagnosis>> Post([FromBody] Diagnosis diagnosis)
+
+        [HttpGet] //Lista de los diagnosticos y sus citas
+        public async Task<ActionResult<List<GetDiagDTO>>> Get()
         {
-            dbContext.Add(diagnosis);
+            var dia =  await dbContext.Diagnosis.ToListAsync();
+            return mapper.Map<List<GetDiagDTO>>(dia);
+
+        }
+
+
+        [HttpGet ("DiagbyId")] //Lista de los diagnosticos y sus citas
+        public async Task<ActionResult<List<GetDiagDTO>>> GetbyId(int id)
+        {
+            
+            var dia = await dbContext.Diagnosis.Where(x => x.Id == id).ToListAsync();
+            return mapper.Map<List<GetDiagDTO>>(dia);
+
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody] DiagnosisDTO diagnosisDTO)
+        {
+            var APTExists = await dbContext.Appointments.AnyAsync(x => x.Id == diagnosisDTO.appointmentId);
+            if (!APTExists)
+            {
+                return BadRequest("No existe cita en la base de datos con ese Id");
+            }
+            //
+            var diagnosisDB = mapper.Map<Diagnosis>(diagnosisDTO);
+            dbContext.Add(diagnosisDB);
+            await dbContext.SaveChangesAsync();
+
+            var Apointment = await dbContext.Appointments.FirstOrDefaultAsync(x => x.Id == diagnosisDTO.appointmentId);
+
+            Apointment.diagId = diagnosisDB.Id;
+            dbContext.Update(Apointment);
             await dbContext.SaveChangesAsync();
             return Ok();
-        }*/
+        }
 
         [HttpPut]
         public async Task<ActionResult> Put([FromBody] Diagnosis diagnosis, [FromHeader] int id)

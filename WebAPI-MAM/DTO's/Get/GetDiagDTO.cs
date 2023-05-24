@@ -1,27 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace WebAPI_MAM.Entities
+namespace WebAPI_MAM.DTO_s.Get
 {
-    public class Diagnosis
+    public class GetDiagDTO //Aquí es casi igual a la entidad ya que se necesita para el paciente 
     {
-        [Key]
         public int Id { get; set; }
-
         [Required]
         public string observations { get; set; }
-
         [Required]
         public string diagnostic { get; set; }
-
         [Required]
         public string treatment { get; set; }
-
         [Required]
         public string drugs { get; set; }
 
-        //[ForeignKey("appointment")]
-        public int appointmentId { get; set; } //?
-        public Appointments appointment { get; set; }//No agregar REQUIRED, sino desde AptmController Post retorna BadRequest
+        public GetAptmDTO appointment { get; set; }
     }
 }

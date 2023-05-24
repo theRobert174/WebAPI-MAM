@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebAPI_MAM.Validators;
+using Newtonsoft.Json;
 
 namespace WebAPI_MAM.Entities
 {
@@ -16,6 +18,8 @@ namespace WebAPI_MAM.Entities
         public string mail { get; set; }
 
         [Required]
+        //[FirstLetterUppercase]
+        //[PasswordValidation]
         public string password { get; set; }
 
         [Required]
@@ -28,11 +32,8 @@ namespace WebAPI_MAM.Entities
 
         public List<Appointments> appointments { get; set; }
 
-        [Required(ErrorMessage = "Datos medicos del paciente no establecidos")]
-        [ForeignKey("medicInfo")]
         public int medicInfoId { get; set; }
+        [JsonIgnore]
         public MedicInfo medicInfo { get; set; }
-
-
     }
 }

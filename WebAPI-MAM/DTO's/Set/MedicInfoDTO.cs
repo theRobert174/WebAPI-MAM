@@ -1,14 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
 
-namespace WebAPI_MAM.Entities
+namespace WebAPI_MAM.DTO_s.Set
 {
-    public class MedicInfo
+    public class MedicInfoDTO
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required]
         [StringLength(16)]
         public string nss { get; set; }
@@ -21,9 +16,6 @@ namespace WebAPI_MAM.Entities
 
         public string sicknessHistory { get; set; }
 
-        //[ForeignKey("patient")]    
         public int patientId { get; set; }
-        //[JsonIgnore]
-        public Patients patient { get; set; } //No agregar REQUIRED, sino desde PatrientController Post retorna BadRequest
     }
 }
